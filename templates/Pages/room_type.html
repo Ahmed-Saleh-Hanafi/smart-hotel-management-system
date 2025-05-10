@@ -2,7 +2,631 @@
     {% block content %} 
         {% load static %} 
 
-        {% include 'test2.html' %}
+        <style>
+    .mainn-cont {
+        padding-top: 90px;
+        margin: 0px 8%;
+    }
+
+    /* Gallery */
+    .gallery-container {
+        display: flex;
+        gap: 20px;
+        background-color: rgb(241, 235, 235);
+        padding: 20px;
+        border-radius: 8px;
+    box-shadow : 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+    }
+    .main-image {
+        flex: 2;
+    }
+
+    .main-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+    }
+
+    .thumbnail-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .thumbnail-grid img {
+        width: 100%;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .thumbnail-grid img:hover {
+        transform: scale(1.05);
+    }
+
+    .more-thumbnails {
+        position: relative;
+    }
+
+    
+    /* Navbar */
+    
+    .navbar-rooms {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        display: flex;
+        background-color: rgb(13, 23, 35);
+        border-top: 1px solid rgb(13, 23, 35);
+        border-bottom: 1px solid rgb(13, 23, 35);
+        padding: 10px 20px;
+        justify-content: flex-start;
+        border-radius: 17px;
+        margin-top: 20px;
+        box-shadow : 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .navbar-rooms a {
+        padding: 10px 15px;
+        margin-right: 10px;
+        text-decoration: none;
+        color:#D4AF37;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+
+
+    }
+
+
+    .navbar-rooms a:hover {
+        border-bottom: 3px solid #D4AF37;
+    }
+
+
+
+    .navba-roomsr a.active {
+        border-bottom: 3px solid #0070f3;
+        color: #0070f3;
+    }
+
+    /* Select button */
+    .select-room {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px;
+        background: white;
+        
+    }
+
+    .select-room button {
+        background-color: rgb(13, 23, 35);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .select-room button:hover {
+        background-color: #005ec2;
+    }
+
+    details-topic {
+        margin-bottom: 5px;
+    }
+
+    .rating {
+        display: inline-block;
+        background-color: #1e643b;
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 3px 8px;
+        border-radius: 6px;
+        margin: 10px 0;
+    }
+
+    .main-content-details {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        box-shadow : 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .property-section {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex: 1;
+    }
+
+    .left-property,
+    .right-map {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .amenities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .amenity {
+        flex: 1 1 45%;
+    }
+
+    .map img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .explore {
+        margin-top: 10px;
+    }
+
+    .place {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .location-name {
+        font-weight: normal;
+    }
+
+    .location-time {
+        color: #555;
+        font-size: 0.9em;
+    }
+
+    .property-link {
+        color: #0f4299;
+        text-decoration: none;
+    }
+
+    .property-link:hover {
+        text-decoration: underline;
+    }
+
+
+
+
+    /* --------- Beginning of second div (Reviews section) style --------- */
+    .reviews-section {
+        display: flex;
+        align-items: flex-start;
+        margin-top: 40px;
+        gap: 40px;
+    }
+
+    .review-score {
+        flex: 0 0 180px;
+        font-size: 40px;
+        color: green;
+        font-weight: bold;
+    }
+
+    .review-score small {
+        display: block;
+        font-size: 16px;
+        color: black;
+        font-weight: normal;
+        margin-top: 10px;
+    }
+
+    .reviews {
+        display: flex;
+        gap: 20px;
+    }
+
+    .review-card {
+        flex: 1 1 300px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-card h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+    }
+
+    .review-card p {
+        margin: 5px 0;
+        color: #333;
+    }
+
+    .review-card a {
+        display: inline-block;
+        margin-top: 8px;
+        font-size: 0.9em;
+    }
+
+    .see-all-reviews {
+        margin-top: 20px;
+        display: inline-block;
+        padding: 10px 20px;
+        border: 2px solid blue;
+        border-radius: 20px;
+        color: blue;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .see-all-reviews:hover {
+        background: blue;
+        color: white;
+    }
+
+    .review-content {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: rgb(211, 211, 211);
+        border-radius: 20px;
+    }
+
+    /* --------- End of second div (Reviews section) style --------- */
+
+    /* --------------------- beginning of plicy div ----------------*/
+    .info-section {
+        max-width: 1400px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+        box-shadow : 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .info-block {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .info-block h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .info-block p,
+    .info-block ul {
+        margin: 0 0 16px;
+        line-height: 1.5;
+        color: #4B5563;
+    }
+
+    .info-block ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    .info-block ul li::before {
+        content: "•";
+        color: #6B7280;
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+
+    /* Policies subgrid */
+    .policies {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+    }
+
+    .policy-block h3 {
+        margin-top: 0;
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .policy-block p {
+        margin: 0 0 8px;
+        color: #4B5563;
+        line-height: 1.4;
+        font-size: 14px;
+    }
+
+    /* --------------------- end of plicy div ----------------*/
+
+
+
+    .room-slider {
+        flex: 2;
+        position: relative;
+        height: 350px;
+        border-radius: 15px;
+    }
+
+    .slides {
+        display: flex;
+        transition: transform 0.4s ease;
+    }
+
+    .slide {
+        min-width: 100%;
+    }
+
+    .slide img {
+        width: 100%;
+        height: 350px;
+        object-fit: cover;
+    }
+
+    .room-slider button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        border-radius: 50%;
+        font-size: 22px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    .prev {
+        left: 10px;
+    }
+
+    .next {
+        right: 10px;
+    }
+
+
+
+    /* -------------------- */
+</style>
+        <div class="mainn-cont">
+    <div class="main-wrappeer">
+        <!-- Gallery First -->
+        <div class="gallery-container">
+            <div class="room-slider">
+                <div class="slides" id="slides1">
+                    {% for image in room_type.images.all%}
+                    <div class="slide"><img src="{{image.image.url}}"></div>
+                    {% endfor%}
+                </div>
+                <button class="prev" onclick="moveSlide('slides1', -1)">❮</button>
+                <button class="next" onclick="moveSlide('slides1', 1)">❯</button>
+            </div>
+
+            <div class="thumbnail-grid">
+                {% for image in room_type.images.all  %}
+                    <div class="slide"><img src="{{image.image.url}}"></div>
+                {% endfor%}
+                
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+    <!-- Navbar BELOW gallery -->
+    <div class="navbar-rooms"  id="navbar-rooms2">
+        <a href="#navbar-rooms2">Overview</a>
+        <a href="#">About</a>
+        <a href="#" class="active">Rooms</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Policies</a>
+    </div>
+
+    <!-- Select Room Button -->
+    <div class="select-room">
+        <button>Select a room</button>
+    </div>
+
+    <div id="overview"></div>
+    <h1 class="details-topic" id="overview">{{room_type.name}} ★★★</h1>
+    <div style="font-weight: bold;"><span class="rating">{{room_type.rate}}</span> Excellent</div>
+    <a class="property-link">See all reviews ></a>
+
+    <div class="main-content-details" >
+        <!-- Left Column -->
+        <div class="left-property">
+            <div class="property-section">
+                <h2>About this property</h2>
+                <p>{{room_type.view}}</p>
+                <div><span class="rating">{{room_type.rate}}</span> Guests loved the amenities. <a class="property-link">See
+                        reviews</a>
+                </div>
+
+                <div class="amenities">
+                    <div class="amenity">☕ Continental breakfast included</div>
+                    <div class="amenity">🅿 Self-parking included</div>
+                    <div class="amenity">🍽 Restaurant</div>
+                    <div class="amenity">🚌 24-hour airport shuttle available</div>
+                    <div class="amenity">📶 Free WiFi</div>
+                    <div class="amenity">🍸 Bar and lounge</div>
+                </div>
+
+                <br>
+                <a class="property-link">See all about this property</a>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="right-map">
+            <div class="property-section">
+                <h2>Explore the area</h2>
+                <div> <span class="rating">{{room_type.rate}}</span>Guests loved the area. <a class="property-link">See reviews</a>
+                </div>
+
+                <div class="map">
+                    
+                    <p><strong>Address:</strong> 11 Abou Al Hool Al Seiahi, Al Haram, Giza, Giza Governorate, 12557</p>
+                    <a class="property-link">View in a map</a>
+                </div>
+
+                <div class="explore">
+                    <div class="place">
+                        <span class="location-name">Giza Pyramid Complex</span>
+                        <span class="location-time">4 min walk</span>
+                    </div>
+                    <div class="place">
+                        <span class="location-name">Great Sphinx of Giza</span>
+                        <span class="location-time">1 min drive</span>
+                    </div>
+                    <div class="place">
+                        <span class="location-name">Pyramid of Khufu</span>
+                        <span class="location-time">8 min drive</span>
+                    </div>
+                    <div class="place">
+                        <span class="location-name">Cairo (CAI-Cairo Intl.)</span>
+                        <span class="location-time">53 min drive</span>
+                    </div>
+                </div>
+
+                <br>
+                <a class="property-link">See all about this area</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <!-- /* -----------------end of search div---------------------- */ -->
+
+
+
+    <!-- --------- Beginning of second div (Reviews section) --------- -->
+    <div class="review-content" id="review-content">
+        <div class="reviews-section">
+            <div class="review-score">
+                {{room_type.rate}}/5
+                <small>Excellent<br>verified reviews</small>
+            </div>
+            <div class="reviews">
+                <div class="review-card">
+                    <h4>10/10 Excellent</h4>
+                    <p>It was a perfect stay for us. Huge Egyptian Breakfast, Perfect view of Pyramid. We enjoyed it.
+                    </p>
+                    <a href="#">See more</a>
+                    <p><strong>SURYA KANTA</strong><br>10 April 2025</p>
+                </div>
+                <div class="review-card">
+                    <h4>8/10 Good</h4>
+                    <p>Very good location and food.</p>
+                    <a href="#">See more</a>
+                    <p><strong>Evelyn</strong><br>20 February 2025</p>
+                </div>
+            </div>
+        </div>
+        <br>
+        <a href="#" class="see-all-reviews">See all reviews</a>
+        <!-- --------- End of second div (Reviews section) --------- -->
+    </div>
+
+
+
+    <!-- Accessibility & Policies -->
+    <section class="info-section">
+        <!-- Accessibility -->
+        <div class="info-block">
+            <h2>Accessibility</h2>
+            <p>If you have requests for specific accessibility needs, please contact the property using the information
+                on
+                the reservation confirmation received after booking.</p>
+        </div>
+        <!-- Common Areas & Rooms as columns -->
+        <div class="info-block">
+            <h2>Common areas</h2>
+            <ul>
+                <li>Elevator (32 inch wide door)</li>
+                <li>Well-lit path to entrance</li>
+                <li>Wheelchair-accessible path to elevator</li>
+            </ul>
+        </div>
+        <div class="info-block">
+            <h2>Rooms</h2>
+            <ul>
+                <li>Tile flooring in room</li>
+            </ul>
+        </div>
+        <!-- Policies spanning full width -->
+        <div class="policies">
+            <div class="info-block policy-block">
+                <h2>Policies</h2>
+            </div>
+            <div class="policy-block">
+                <h3>Check-in</h3>
+                <p>Check-in start time: 2:00 PM; Check-in end time: midnight</p>
+                <p>Contactless check-in available</p>
+                <p>Late check-in subject to availability</p>
+                <p>Minimum check-in age: 18</p>
+            </div>
+            <div class="policy-block">
+                <h3>Check-out</h3>
+                <p>Check-out before 11:00 AM</p>
+                <p>Contactless check-out available</p>
+            </div>
+            <div class="policy-block">
+                <h3>Special check-in instructions</h3>
+                <p>This property offers transfers from the airport (surcharges may apply); guests must contact the
+                    property
+                    with arrival details before travel, using the contact information on the booking confirmation.</p>
+                <p>Front desk staff will greet guests on arrival at the property.</p>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+
+
+
+<script>
+    function showSlide(slidesId, index) {
+        const slides = document.querySelectorAll(`#${slidesId} .slide`);
+        if (slides.length === 0) return;
+
+        // Ensure index stays within bounds
+        if (index >= slides.length) index = 0;
+        if (index < 0) index = slides.length - 1;
+
+        // Hide all slides
+        slides.forEach(slide => slide.style.display = 'none');
+
+        // Show the current slide
+        slides[index].style.display = 'block';
+
+        // Store the index in a data attribute for later reference
+        document.getElementById(slidesId).dataset.current = index;
+    }
+
+    function moveSlide(slidesId, direction) {
+        const slidesContainer = document.getElementById(slidesId);
+        let current = parseInt(slidesContainer.dataset.current || '0', 10);
+        const newIndex = current + direction;
+        showSlide(slidesId, newIndex);
+    }
+
+    // Initialize the first slide when page loads
+    document.addEventListener("DOMContentLoaded", () => {
+        showSlide('slides1', 0);
+    });
+</script>
         {% include 'Parts/rooms_section.html' %}
         {% include 'Parts/question_section.html' %}
         {% include 'Parts/features_section.html' %}
