@@ -1,0 +1,188 @@
+{% extends 'base.html'%}
+{% block content %}
+{% load static %} 
+        <link rel="stylesheet" href="{% static 'style/profile_setting.css'%}">
+        <div class="profile_setting">
+            <header>
+              <div class="welcome">
+                <h2>welcome, {{guest_info.username}}</h2>
+                <p id="currentDate"></p>
+              </div>
+              
+            </header>
+        
+            <section class="profile-card">
+              <div class="gradient-bar"></div>
+              <div class="profile-content">
+                <form method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <div class="user-info">
+
+                    <label for="profileUpload" class="profile-image-wrapper">
+                      
+                        {% if guest_info.profile_picture%}
+                        <img id="profilePreview" src="{{ guest_info.profile_picture.url }}" alt="Profile" />
+                        {% else %}
+                        <img id="profilePreview" src="{% static 'img/profile.webp'%}" alt="Profile" />
+                        {% endif %}
+                        <input type="file" id="profileUpload" accept="image/*" style="display: none" name="image"/>
+                         
+                      </label>
+                  <div>
+                    <h3>{{guest_info.username}}</h3>
+                    <p>{{guest_info.email}}</p>
+                  </div>
+                </div>
+                <button type="submit" class="edit-btn">Update Image</button>
+                </form>
+              </div>
+        
+              <form class="settings-form" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input type="text" placeholder="{{guest_info.username}}" name="username" />
+                </div>
+                <div class="form-group">
+                  <label>Phone Number</label>
+                  <input type="text" placeholder="{{guest_info.phone_number}}" id="phone" name="phone"/>
+                </div>
+                <div class="form-group">
+                  <label>Gender</label>
+                  <select  name="gender">
+                    {% if guest_info.gender == "M" %}
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                    {% elif  guest_info.gender == "F"%}
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Other</option>
+                    {% else %}
+                    <option>Other</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    {% endif %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Country</label>
+                  <select  name="country">
+                    {% if guest_info.country%}
+                    <option value="{{guest_info.country}}">{{guest_info.country}}</option>
+                    {% else %}
+                    <option value="" disabled selected hidden>Select Country</option>
+                    {% endif %}
+                    <option value="Afghanistan">Afghanistan</option>
+                    <option value="Albania">Albania</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Argentina">Argentina</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Austria">Austria</option>
+                    <option value="Bangladesh">Bangladesh</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Brazil">Brazil</option>
+                    <option value="Canada">Canada</option>
+                    <option value="China">China</option>
+                    <option value="Denmark">Denmark</option>
+                    <option value="Egypt">Egypt</option>
+                    <option value="Finland">Finland</option>
+                    <option value="France">France</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Greece">Greece</option>
+                    <option value="India">India</option>
+                    <option value="Indonesia">Indonesia</option>
+                    <option value="Ireland">Ireland</option>
+                    <option value="Italy">Italy</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Malaysia">Malaysia</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="New Zealand">New Zealand</option>
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="Norway">Norway</option>
+                    <option value="Pakistan">Pakistan</option>
+                    <option value="Philippines">Philippines</option>
+                    <option value="Poland">Poland</option>
+                    <option value="Portugal">Portugal</option>
+                    <option value="Russia">Russia</option>
+                    <option value="Saudi Arabia">Saudi Arabia</option>
+                    <option value="Singapore">Singapore</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="South Korea">South Korea</option>
+                    <option value="Spain">Spain</option>
+                    <option value="Sweden">Sweden</option>
+                    <option value="Switzerland">Switzerland</option>
+                    <option value="Thailand">Thailand</option>
+                    <option value="Turkey">Turkey</option>
+                    <option value="Ukraine">Ukraine</option>
+                    <option value="United Arab Emirates">United Arab Emirates</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="United States">United States</option>
+                    <option value="Vietnam">Vietnam</option>
+                  </select>
+                </div>
+                
+                <div class="form-group full-width  passwidth" >
+                  <label>Password</label>
+                  <input type="password" value="{{guest_info.password}}"  name="password"/>
+                </div>
+                <button class="edit-btn" type="submit">Edit</button>
+              </form>
+        
+              <div class="email-section">
+                <h4>My email Address</h4>
+                <div class="email-box">
+                  <span class="email-icon">📧</span>
+                  <div>
+                    <p>{{guest_info.email}}</p>
+                    <small>data joined {{guest_info.date_joined}}</small>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <div class="delete-section">
+                <a href="{% url 'delete_account'%}"><button class="delete-btn" id="delete_btn">Delete My Account</button></a>
+              </div>
+          </div>
+
+          <script>
+            const profileUpload = document.getElementById('profileUpload');
+            const profilePreview = document.getElementById('profilePreview');
+          
+            profileUpload.addEventListener('change', function () {
+              const file = this.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                  profilePreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+              }
+            });
+            function confirmDelete() {
+                if (confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+                   
+                  alert("Account deleted!");
+                }
+              }
+              const currentDateElement = document.getElementById('currentDate');
+            const options = { weekday: 'short', day: '2-digit', month: 'long', year: 'numeric' };
+            const today = new Date().toLocaleDateString('en-US', options);
+            currentDateElement.textContent = today;
+            document.querySelectorAll('input, select').forEach(field => {
+                field.addEventListener('input', () => {
+                  if (field.value.trim() !== '') {
+                    field.classList.add('filled');
+                  } else {
+                    field.classList.remove('filled');
+                  }
+                });
+              });
+              
+          </script>
+          <script src="{% static 'js/index.js'%}"></script>
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+{% endblock content%}

@@ -1,0 +1,450 @@
+{% extends 'base.html' %} 
+    {% block content %} 
+        {% load static %} 
+        
+  <style>
+    
+    .booking-con {
+      padding-top: 90px;
+      padding-bottom: 215px;
+    }
+    .history-container {
+      max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    
+    box-shadow: 0 2px 20px rgb(13 23 35 / 84%);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+    #sort-icon {
+  transition: transform 0.3s ease;
+  width: 16px;
+  height: 16px;
+  fill: #333;
+  
+}
+
+    .filters {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .filters button {
+      background: #f0f0f0;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .filters button.active {
+      background-color: #333;
+      color: white;
+    }
+
+    .day-group {
+      margin-bottom: 30px;
+    }
+
+    .day-group h3 {
+      color: #888;
+      margin-bottom: 15px;
+      font-size: 15px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+    }
+
+    .entry {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .entry-time {
+      width: 60px;
+      font-size: 13px;
+      color: #999;
+    }
+
+    .entry-icon {
+      width: 30px;
+      margin: 0 10px;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .entry-content {
+      background: #f9f9fb;
+      border-radius: 8px;
+      padding: 12px 16px;
+      flex-grow: 1;
+      border: 1px solid #eee;
+    }
+
+    .entry-content h4 {
+      margin: 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .info-row {
+      font-size: 14px;
+      margin-top: 6px;
+      color: #555;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 6px;
+    }
+
+    .confirmed {
+      background: #d4f5d3;
+      color: #2e8b57;
+    }
+
+    .cancelled {
+      background: #ffdede;
+      color: #c0392b;
+    }
+
+    .pending {
+      background: #fff5d1;
+      color: #e0a800;
+    }
+
+    .stars {
+      margin-top: 10px;
+    }
+
+    .star {
+      font-size: 20px;
+      color: #ccc;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .star:not(.locked):hover,
+    .star:not(.locked):hover ~ .star:not(.locked) {
+      color: gold;
+    }
+
+  .star.locked {
+    pointer-events: none;
+  }
+
+  .stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  .star.selected {
+    color: gold;
+  }
+
+  .feedback-box { 
+    display: none;
+    margin-top: 10px;
+    }
+
+  .feedback-box textarea {
+    width: 70%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    }
+
+  .feedback-box .buttons {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    }
+
+  .feedback-box button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    }
+
+    /* رسالة الخطأ الخاصة بالفيدباك */
+.feedback-box .error-msg {
+  color: red;
+  font-size: 13px;
+  display: none;
+  margin-top: 4px;
+}
+
+/* زرار الفرز (Sort by date) */
+#sort-btn {
+  border: none;
+  background: none;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.sort-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+
+  </style>
+<div class="booking-con">
+
+<div class="history-container">
+  <h2>Booking History</h2>
+  
+  <div class="filters">
+    <button class="active" onclick="filterStatus('all')">All Bookings</button>
+    <button onclick="filterStatus('confirmed')">Completed</button>
+    <button onclick="filterStatus('cancelled')">Cancelled</button>
+    <button onclick="filterStatus('pending')">In Progress</button>
+  </div>
+  <div class="sort-container">
+    <button id="sort-btn" onclick="toggleSort()" title="Sort: Newest first">
+    <span>Sort by date</span>
+    <svg id="sort-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M8 12a.5.5 0 0 1-.374-.832l3-3.5a.5.5 0 0 1 .748 0l3 3.5A.5.5 0 0 1 13 12H8z"/>
+    </svg>
+  </button>
+  
+    
+  </div>
+  
+  <div id="history-list">
+    
+    <!-- الحجوزات هتتحط هنا -->
+  </div>
+
+</div>
+</div>
+<script>
+let sortDescending = localStorage.getItem("sortDescending") === "false" ? false : true;
+function toggleSort() 
+{
+  const historyList = document.getElementById("history-list");
+  const dayGroups = Array.from(historyList.querySelectorAll('.day-group'));
+  dayGroups.forEach(group => 
+  {
+    const entries = Array.from(group.querySelectorAll('.entry'));
+    const sortedEntries = entries.sort((a, b) => sortDescending ? b.innerHTML.localeCompare(a.innerHTML) : a.innerHTML.localeCompare(b.innerHTML));
+    entries.forEach(entry => group.removeChild(entry));
+    sortedEntries.forEach(entry => group.appendChild(entry));
+    localStorage.setItem("sortDescending", sortDescending);
+
+  });
+
+  const sortedGroups = dayGroups.sort((a, b) => 
+  {
+    return sortDescending
+      ? b.querySelector('h3').textContent.localeCompare(a.querySelector('h3').textContent)
+      : a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+  });
+
+  sortedGroups.forEach(group => historyList.appendChild(group));
+
+  sortDescending = !sortDescending;
+  const sortIcon = document.getElementById("sort-icon");
+  sortIcon.style.transform = sortDescending ? "rotate(0deg)" : "rotate(180deg)";
+  const sortBtn = document.getElementById("sort-btn");
+  sortBtn.title = sortDescending ? "Sort: Newest first" : "Sort: Oldest first";
+}
+
+  function filterStatus(status) 
+  {
+    document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+    event.target.classList.add("active");
+
+    document.querySelectorAll(".entry").forEach(entry => 
+    {
+      const entryStatus = entry.getAttribute("data-status");
+      if (status === 'all' || entryStatus === status) 
+      {
+        entry.style.display = "flex";
+      } else 
+      {
+        entry.style.display = "none";
+      }
+    });
+  }
+
+  function selectStar(star) 
+  {
+    const stars = Array.from(star.parentElement.querySelectorAll('.star')).reverse();
+    if (stars.some(s => s.classList.contains('locked'))) return;
+    const index = stars.indexOf(star);
+    stars.forEach((s, i) => 
+    {
+      if (i <= index) 
+      {
+        s.classList.add('selected');
+        s.classList.add('locked');
+      } 
+      else 
+      {
+        s.classList.remove('selected');
+      }
+    });
+    const feedbackBox = star.closest('.entry-content').querySelector('.feedback-box');
+    if (feedbackBox) 
+    {
+      feedbackBox.style.display = 'block';
+    }
+}
+
+
+
+function submitFeedback(btn) 
+{
+  const feedbackBox = btn.closest('.feedback-box');
+  const textarea = feedbackBox.querySelector('textarea');
+  const feedback = textarea.value.trim();
+  const errorMsg = feedbackBox.querySelector('.error-msg');
+
+  if (!feedback) 
+  {
+    errorMsg.textContent = "Please enter your feedback before submitting.";
+    errorMsg.style.display = "block";
+    return;
+  }
+
+  errorMsg.style.display = "none";
+  feedbackBox.style.display = 'none';
+  textarea.value = '';
+}
+
+  function cancelFeedback(btn) 
+  {
+    const feedbackBox = btn.closest('.feedback-box');
+    feedbackBox.style.display = 'none';
+    feedbackBox.querySelector('textarea').value = '';
+  }
+
+  function addBooking(data) 
+  {
+    const historyList = document.getElementById("history-list");
+    let dayGroup = Array.from(document.querySelectorAll('.day-group')).find(group => group.querySelector('h3').textContent === data.dateText);
+    if (!dayGroup) {
+      dayGroup = document.createElement('div');
+      dayGroup.className = 'day-group';
+      dayGroup.innerHTML = `<h3>${data.dateText}</h3>`;
+      historyList.appendChild(dayGroup);
+    }
+
+    const entry = document.createElement('div');
+    entry.className = 'entry';
+    entry.setAttribute('data-status', data.status);
+
+    let icon = '';
+    if (data.status === 'confirmed') icon = '✅';
+    else if (data.status === 'cancelled') icon = '❌';
+    else icon = '⏳';
+
+    let content = `
+      <div class="entry-time">${data.time}</div>
+      <div class="entry-icon">${icon}</div>
+      <div class="entry-content">
+          <h4>${data.roomName}</h4>
+          <div class="info-row">Check-in: ${data.checkIn} → Check-out: ${data.checkOut}</div>
+          <div class="info-row">Total Price: ${data.price}</div>
+          <div class="info-row">Payment Method: ${data.payment}</div>
+          <div class="status-badge ${data.status}">${data.statusText}</div>
+    `;
+
+    if (data.status === 'confirmed') 
+    {
+      content += `
+        <div class="stars">
+          <span class="star" onclick="selectStar(this)">★</span>
+          <span class="star" onclick="selectStar(this)">★</span>
+          <span class="star" onclick="selectStar(this)">★</span>
+          <span class="star" onclick="selectStar(this)">★</span>
+          <span class="star" onclick="selectStar(this)">★</span>
+        </div>
+        <div class="feedback-box">
+          <textarea placeholder="Write your feedback here (optional)"></textarea>
+            <div class="error-msg" ></div>
+            <div class="buttons">
+              <button class="filters" onclick="submitFeedback(this)">Submit</button>
+              <button class="filters" onclick="cancelFeedback(this)">Cancel</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    content += `</div>`;
+    entry.innerHTML = content;
+    dayGroup.appendChild(entry);
+  }
+  
+    addBooking({
+    dateText: 'Thursday, 11 April 2025',
+    time: '12:30',
+    roomName: 'Deluxe Room',
+    checkIn: '2025-04-09',
+    checkOut: '2025-04-11',
+    price: '$1500',
+    payment: 'Card',
+    status: 'confirmed', 
+    statusText: 'Completed'
+  });
+  addBooking({
+    dateText: 'Thursday, 11 April 2025',
+    time: '12:30',
+    roomName: 'Deluxe Room',
+    checkIn: '2025-04-03',
+    checkOut: '2025-04-11',
+    price: '$1500',
+    payment: 'Card',
+    status: 'cancelled', 
+    statusText: 'Cancelled'
+  });
+  addBooking({
+    dateText: 'Wednesday, 12 April 2025',
+    time: '12:30',
+    roomName: 'Deluxe Room',
+    checkIn: '2025-04-04',
+    checkOut: '2025-04-11',
+    price: '$1500',
+    payment: 'Card',
+    status: 'confirmed', 
+    statusText: 'Completed'
+  });
+  addBooking({
+    dateText: 'Thursday, 11 April 2025',
+    time: '12:30',
+    roomName: 'Deluxe Room',
+    checkIn: '2025-04-05',
+    checkOut: '2025-04-11',
+    price: '$1500',
+    payment: 'Card',
+    status: 'confirmed', 
+    statusText: 'Completed'
+  });
+
+</script>
+
+{% endblock content%}
+

@@ -1,0 +1,31 @@
+{% extends 'base.html' %} 
+    {% block content %} 
+        {% load static %} 
+        <link rel="stylesheet" href="{% static 'style/style.css'%}">
+        <!--------------- img    description     search box  --------------->
+        {% include 'Parts/intro.html' %}
+
+        <!---------------- features of Luxotel  ----------------- -->
+        {% include 'Parts/features_section.html' %}
+
+        <!------------------- avaliable rooms  ------------- -->
+        
+
+        {% include 'Parts/room_type_section.html' %}
+
+        {% include 'Parts/rooms_section.html' %}
+        {% include 'Parts/question_section.html' %}
+        {% include 'Parts/about.html' %}
+        
+        
+
+        <!-------------------- Log in   Register    Reset -->
+        {% include 'Parts/register_login_reset.html' %}
+
+        
+                <!--------------- js files  ---------------------->
+                <script src="{% static 'js/index.js'%}"></script>
+                <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+                <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+                <!--  -->
+    {% endblock content %}

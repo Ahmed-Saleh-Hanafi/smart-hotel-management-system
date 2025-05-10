@@ -1,0 +1,87 @@
+        <div class="wrapper">
+            <!--------------- icon exit  ----------------->
+            <span class="icon-close">
+                    <ion-icon name="close"></ion-icon>
+            </span>
+            <!------------------ log in ------------->
+            <div class="form-box">
+                <h2>Log In</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                        <input type="email" required placeholder="Email" name="semail">
+                    </div>
+                    <div class="input-box">
+                        <span class="icon" id="s"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" required id="ss" placeholder="Password" name="spassword">
+                    </div>
+                    <div class="remember">
+                        <label><input type="checkbox">Remember me</label>
+                        <a href="#" class="reset-link" >Forgot Password?</a>
+                    </div>
+                    <button class="btn" type="submit" name="login">Log in</button>
+                    <div class="login-register">
+                        <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                    </div>
+                </form>
+            </div>
+            <!------------------ Register  --------->
+            <div class="formboxrg">
+                <h2>Register</h2>
+                <form  method="post" >
+                    {% csrf_token %}
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="person"></ion-icon></span>
+                        <input type="text" required placeholder="Name" name="rusername">
+                    </div>
+
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                        <input type="email" required placeholder="Email" name='remail'>
+                    </div>
+
+                    <div class="input-box" id='ph'>
+                        <span class="icon"><ion-icon name="call"></ion-icon></ion-icon></span>
+                        <input type="tel" id="phone" name="rphone" required placeholder="Phone">
+                    </div>
+                    <div class="input-box">
+                        <span class="icon" id="pss"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" required id="lpss" placeholder="Password" name="rpassword">
+                    </div>
+                    <div class="input-box">
+                        <span class="icon" id="cpss"><ion-icon name="lock-closed"></ion-icon></span>
+                        <input type="password" required id="lcpss" placeholder="Confirm Password">
+                    </div>
+                    <div class="terms">
+                        <label>
+                                    <input type="checkbox" id="agree" />
+                                    I agree to the <a href="#" target="_blank">Terms & Conditions</a>
+                                </label>
+                    </div>
+
+                    <p id="error-msg" style="color: rgb(44, 7, 7); display: none;">Passwords do not match</p>
+                    <p id="terms-error" style="color: rgb(44, 7, 7); display: none;">You must accept the terms to continue.</p>
+
+
+
+                    <button class="btn" type="submit" id="submit-btn" value="save">Sign Up</button>
+
+                    <div class="login-register">
+                        <p> Already have an account? <a href="#" class="register-linkk">Login</a></p>
+                    </div>
+                </form>
+            </div>
+            <!-------------------Resset ---------- -->
+            <div class="reset-box">
+                <h2>Reset Password</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-box">
+                        <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                        <input type="email" required placeholder="Email" name="resetemail">
+                    </div>
+                    <button class="btn" type="submit" >Reset</button>
+                </form>
+            </div>
+        </div>

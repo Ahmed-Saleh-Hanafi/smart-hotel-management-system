@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Room Control</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 500px;
+      background: #ffffff;
+      margin: auto;
+      padding: 30px 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 26px;
+      margin-bottom: 25px;
+    }
+    .section {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h2 {
+      margin: 0;
+      color: #444;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 32px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider.round {
+      position: absolute;
+      cursor: pointer;
+      background-color: #d0d0d0;
+      border-radius: 34px;
+      top: 0; left: 0; right: 0; bottom: 0;
+      transition: 0.4s;
+    }
+    .slider.round:before {
+      position: absolute;
+      content: "";
+      height: 24px; width: 24px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      border-radius: 50%;
+      transition: 0.4s;
+    }
+    input:checked + .slider.round {
+      background-color: #007bff;
+    }
+    input:checked + .slider.round:before {
+      transform: translateX(26px);
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #cleaning-response {
+      display: block;
+      margin-top: 12px;
+      color: rgb(21, 36, 168);
+      font-size: 13px;
+    }
+    .disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    input[type=range] {
+      width: 100%;
+      height: 6px;
+      background: #ddd;
+      border-radius: 5px;
+      outline: none;
+      margin-top: 12px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      width: 22px;
+      height: 22px;
+      background: #007bff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .fa-icon {
+      color: #b1b7be;
+      font-size: 24px;
+    }
+    .ac-extra {
+      margin-top: 20px;
+    }
+    .ac-modes {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .mode-icon {
+      font-size: 26px;
+      color: #b1b7be;
+      cursor: pointer;
+      transition: all 0.3s;
+      padding: 10px;
+      border-radius: 50%;
+    }
+    .mode-icon:hover {
+      color: #007bff;
+      background-color: #f0f2f5;
+    }
+    .mode-icon.active {
+      color: #fff;
+      background-color: #007bff;
+    }
+    .current-mode {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Room Control </h1>
+
+    <!-- AC -->
+    <div class="section">
+      <h2><i class="fas fa-snowflake fa-icon"></i> Air Conditioner</h2>
+      <label class="switch">
+        <input type="checkbox" id="ac-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <div id="temp-control" class="disabled">
+      <input type="range" min="16" max="30" value="22" id="temp-slider" disabled />
+      <span id="temp-display">22°C</span>
+    </div>
+
+    <div class="ac-extra">
+      <div class="ac-modes">
+        <i class="fas fa-snowflake mode-icon" data-mode="Cool" title="Cool"></i>
+        <i class="fas fa-fire mode-icon" data-mode="Heat" title="Heat"></i>
+        <i class="fas fa-wind mode-icon" data-mode="Fan" title="Fan"></i>
+        <i class="fas fa-tint mode-icon" data-mode="Dry" title="Dry"></i>
+        <i class="fas fa-bed mode-icon" data-mode="Sleep" title="Sleep"></i>
+      </div>
+      <div class="current-mode">Current Mode: <span id="current-mode-text">None</span></div>
+    </div>
+
+    <!-- Lights -->
+    <div class="section">
+      <h2><i class="fas fa-lightbulb fa-icon"></i> Lights</h2>
+      <label class="switch">
+        <input type="checkbox" id="light-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <!-- TV -->
+    <div class="section">
+      <h2><i class="fas fa-tv fa-icon"></i> TV</h2>
+      <label class="switch">
+        <input type="checkbox" id="tv-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <!-- Curtains -->
+    <div class="section">
+      <h2><i class="fas fa-person-booth fa-icon"></i> Curtains</h2>
+      <label class="switch">
+        <input type="checkbox" id="curtain-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <!-- DND -->
+    <div class="section">
+      <h2><i class="fas fa-bell-slash fa-icon"></i> Do Not Disturb</h2>
+      <label class="switch">
+        <input type="checkbox" id="dnd-toggle">
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <!-- Lock -->
+    <div class="section">
+      <h2><i class="fas fa-lock fa-icon"></i> Door Lock</h2>
+      <label class="switch">
+        <input type="checkbox" id="lock-toggle" checked>
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <!-- Housekeeping -->
+    <div class="section">
+      <h2><i class="fas fa-broom fa-icon"></i> Housekeeping</h2>
+      <button id="request-cleaning">Request Room Cleaning</button>
+      <span id="cleaning-response"></span>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const acToggle = document.getElementById('ac-toggle');
+      const tempSlider = document.getElementById('temp-slider');
+      const tempDisplay = document.getElementById('temp-display');
+      const tempControl = document.getElementById('temp-control');
+      const currentModeText = document.getElementById('current-mode-text');
+      const modeIcons = document.querySelectorAll('.mode-icon');
+
+      acToggle.addEventListener('change', () => {
+        const isOn = acToggle.checked;
+        tempSlider.disabled = !isOn;
+        tempControl.classList.toggle('disabled', !isOn);
+
+        modeIcons.forEach(icon => {
+          if (isOn) {
+            icon.classList.remove('disabled');
+          } else {
+            icon.classList.remove('active');
+            icon.classList.add('disabled');
+            currentModeText.textContent = 'None';
+          }
+        });
+
+        sendUpdate('ac_on', isOn);
+      });
+
+      tempSlider.addEventListener('input', () => {
+        tempDisplay.textContent = '${tempSlider.value}°C';
+        if (!tempSlider.disabled) {
+          sendUpdate('ac_temperature', tempSlider.value);
+        }
+      });
+
+      modeIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+          if (acToggle.checked) {
+            modeIcons.forEach(i => i.classList.remove('active'));
+            icon.classList.add('active');
+            const selectedMode = icon.getAttribute('data-mode');
+            currentModeText.textContent = selectedMode;
+      
+            // اضبط الحرارة حسب الوضع
+            let temp = tempSlider.value;
+            if (selectedMode === 'Cool') {
+              temp = 20;
+            } else if (selectedMode === 'Heat') {
+              temp = 28;
+            }
+            // غير قيمة السلايدر وأحدث العرض
+            tempSlider.value = temp;
+            tempDisplay.textContent = '${temp}°C';
+            updateSliderBackground();
+      
+            sendUpdate('ac_mode', selectedMode);
+            sendUpdate('ac_temperature', temp);
+          }
+        });
+      });
+
+      document.getElementById('light-toggle').addEventListener('change', e => sendUpdate('light_on', e.target.checked));
+      document.getElementById('tv-toggle').addEventListener('change', e => sendUpdate('tv_on', e.target.checked));
+      document.getElementById('curtain-toggle').addEventListener('change', e => sendUpdate('curtains_open', e.target.checked));
+      document.getElementById('dnd-toggle').addEventListener('change', e => sendUpdate('do_not_disturb', e.target.checked));
+      document.getElementById('lock-toggle').addEventListener('change', e => sendUpdate('door_locked', e.target.checked));
+
+      document.getElementById('request-cleaning').addEventListener('click', () => {
+        sendUpdate('cleaning_request', 'requested');
+        const msg = document.getElementById('cleaning-response');
+        msg.textContent = 'Cleaning request sent.';
+        setTimeout(() => msg.textContent = '', 3000);
+      });
+
+      function sendUpdate(field, value) {
+        fetch('/room-control/update/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ field, value })
+        }).then(() => console.log('Sent:', field, value))
+          .catch(err => console.error('Error:', err));
+      }
+    });
+  </script>
+</body>
+</html>

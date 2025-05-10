@@ -1,0 +1,48 @@
+        {% load static%} 
+        <section class="rooms-section">
+            
+            <h1 class="title-room">Discover Your Perfect Stay</h1>
+            <div class="room-list">
+              {% for room in rooms_%}
+              <div class="room-card">
+                <img src="{% static 'img/back.webp'%}" alt="Hotel Image">
+                <div class="room-info">
+                  <h2>{{room.type.name}}</h2>
+                  <h6><span class="stars">★★★</span> Hotel</h6>
+                  <h6>{{room.type.view}}</h6>
+                  <h6>{{room.type.max_guests}} - Max Guests</h6>
+                  <h6><strong>{{room.type.rate}} - Good</strong> (1882)</h6>
+                </div>
+                <div class="room-price">
+                  <div class="price">${{room.type.base_price}}</div>
+                  <div class="per-night">per night</div>
+                  <button>See Room</button>
+                </div>
+              </div>
+              {% endfor%}
+              
+
+              {% for room in room_type.rooms.all%}
+              <div class="room-card">
+                <img src="{% static 'img/back.webp'%}" alt="room Image">
+                <div class="room-info">
+                  <h2>{{room.type.name}}</h2>
+                  <h6><span class="stars">★★★</span> Hotel</h6>
+                  <h6>{{room.type.view}}</h6>
+                  <h6>{{room.type.max_guests}} - Max Guests</h6>
+                  <h6><strong>{{room.type.rate}} - Good</strong></h6>
+                  <h6><strong>Room Number {{room.room_number}}</strong></h6>
+                </div>
+                <div class="room-price">
+                  <div class="price">${{room.type.base_price}}</div>
+                  <div class="per-night">per night</div>
+                  <button>See Room</button>
+                </div>
+              </div>
+              {% endfor%}
+              
+                
+            </div>
+          </section>
+        
+    

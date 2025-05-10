@@ -1,0 +1,62 @@
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style/chat.css'%}">
+        
+        <div class="chatbot-container" role="main" aria-label="Chatbot interface">
+            <header class="chatbot-header">
+              <div class="bot-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="12" cy="12" r="10" fill="#3b10a7"/>
+                  <rect x="7" y="10" width="10" height="4" rx="2" ry="2" fill="white"/>
+                  <circle cx="9" cy="12" r="1" fill="#3b10a7"/>
+                  <circle cx="15" cy="12" r="1" fill="#3b10a7"/>
+                  <rect x="11" y="6" width="2" height="2" rx="1" ry="1" fill="white"/>
+                </svg>
+              </div>
+              Chatbot
+              <div class="actions">
+            
+                <button aria-label="Close chat" title="Close chat" id="closeBtn">✕</button>
+              </div>
+            </header>
+          
+            <section class="chatbot-messages" id="chatMessages" aria-live="polite" aria-relevant="additions">
+              <article class="message bot" tabindex="0">
+                <div class="bot-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <circle cx="12" cy="12" r="10" fill="#5a22d1"/>
+                    <rect x="7" y="10" width="10" height="4" rx="2" ry="2" fill="white"/>
+                    <circle cx="9" cy="12" r="1" fill="#5a22d1"/>
+                    <circle cx="15" cy="12" r="1" fill="#5a22d1"/>
+                    <rect x="11" y="6" width="2" height="2" rx="1" ry="1" fill="white"/>
+                  </svg>
+                </div>
+                <div class="bubble">Hello {{guest_info.username}}, I am here to help you!</div>
+              </article>
+              <article class="message user" tabindex="0">
+                {% if guest_info.profile_picture %}
+                <img class="avatar" src="{{guest_info.profile_picture.url}}" alt="User's profile picture" />
+                {% else %}
+                <img class="avatar" src="{% static 'img/profile.webp'%}" alt="User's profile picture" />
+                {% endif %}
+                
+                <div class="bubble">Hi, I need help with my recent order</div>
+              </article>
+                
+            </section>
+          
+            <form class="input-area" id="chatForm" aria-label="Send message form">
+              <input type="text" id="chatInput" placeholder="Type here..." aria-label="Type your message" autocomplete="off" />
+              <button type="submit" aria-label="Send message" title="Send message">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#ffb800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="22" y1="2" x2="11" y2="13"></line>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+              </button>
+            </form>
+          </div>
+          
+        <div class="chatbot-button" onclick="openChat()">
+            <a href="" id="chat-btn"><img src="{% static 'img/chatbot.jpg' %}" class="chatbot-button"></a>
+        </div>
+        <script src="{% static 'js/chat.js'%}"></script>
+        

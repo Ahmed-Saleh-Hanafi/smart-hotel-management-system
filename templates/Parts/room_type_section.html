@@ -1,0 +1,47 @@
+        {% load static%}
+        <style>
+            .more-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007bff;
+      font-size: 14px;
+      text-decoration: none;
+    }
+        </style>
+        <section class="rooms-type-section">
+            <h2 class="features-title">Explore Our Room Types</h2>
+        </section>    
+        <div class="slider-container">
+            <button class="nav-button prev" onclick="slide(-1)">&#10094;</button>
+            <div class="slider" id="slider">
+            {% for room_type in room_types|slice:":10"%}
+            
+            <div class="card">
+                
+                {% with room_type.images.first as image %}
+                {% if image %}
+                <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+                {% endif %}
+                {% endwith %}
+                
+                <div class="card-content">
+                
+                <h3>{{room_type.name}}</h3>
+                <p>{{room_type.rate}} - Excellent</p>
+                <p>{{room_type.max_guests}} - Max Guests</p>
+                <p class="price">${{room_type.base_price}} / night</p>
+                <a href="{% url 'room_type_detail' room_type.room_type_id %}" class="more-link">More details ›</a>
+                </div>
+                
+            </div>
+            
+            {% endfor %}
+            
+            <!-- Add more cards here -->
+            </div>
+            <button class="nav-button next" onclick="slide(1)">&#10095;</button>
+        </div>
+        
+
+        </div>
+        </div>

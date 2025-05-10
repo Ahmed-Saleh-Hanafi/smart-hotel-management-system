@@ -1,0 +1,237 @@
+<link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="uicons-regular-rounded/css/uicons-regular-rounded.css">
+  <style>
+    
+.room-list-con {
+    width: 100%;
+    display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+}
+    
+
+    .room-card2 {
+      width: 100%;
+      max-width: 365px;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .room-slider {
+      position: relative;
+      height: 250px;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+
+    .slide {
+      min-width: 100%;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .room-slider button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.8);
+      border: none;
+      border-radius: 50%;
+      font-size: 22px;
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .prev { left: 10px; }
+    .next { right: 10px; }
+
+    .r-content {
+      padding: 15px;
+      flex: 1;
+    }
+
+    .room-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .rating {
+      display: inline-block;
+      background-color: #1e643b;
+      color: #fff;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+
+    .details {
+      font-size: 14px;
+      color: #444;
+    }
+
+    .details .item-icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 6px 0;
+    }
+
+    .more-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #007bff;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .sold-out {
+      text-align: right;
+      color: red;
+      font-weight: bold;
+      padding: 10px 15px;
+      font-size: 14px;
+    }
+
+    
+
+
+
+
+    .non-refundable {
+  color: red;
+}
+
+.pricing-section {
+  padding: 15px;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: gray;
+  margin-right: 8px;
+}
+
+.discount {
+  color: green;
+  font-size: 16px;
+}
+
+.current-price {
+  font-size: 22px;
+  color: #000;
+}
+
+.total-price {
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+}
+
+.availability {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;
+}
+
+.reserve-btn {
+  margin-top: 10px;
+  width: 100%;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.reserve-btn:hover {
+  background: #0056b3;
+}
+
+.note {
+  font-size: 12px;
+  color: gray;
+  margin-top: 5px;
+  text-align: center;
+}
+
+  </style>
+  <section class="rooms-section">
+<div class="room-list-con">
+
+ {% for room_type in room_types%}
+  <!-- Room Card 1 -->
+  <div class="room-card2">
+    <div class="room-slider">
+      <div class="slides" id="slides{{room_type.room_type_id}}">
+        {% for image in room_type.images.all %}
+        <div class="slide"><img src="{{image.image.url}}" alt="{{room_type.name}}"></div>
+        {% endfor %}
+      </div>
+      <button class="prev" onclick="moveSlide('slides{{room_type.room_type_id}}', -1)">❮</button>
+      <button class="next" onclick="moveSlide('slides{{room_type.room_type_id}}', 1)">❯</button>
+    </div>
+    <div class="r-content">
+      <div class="room-title">{{room_type.name}}</div>
+      <div><span class="rating">{{room_type.rate}}</span> Exceptional</div>
+      <div class="details">
+        <div class="item-icons"><i class="fi fi-rr-mug-alt"></i> Free continental breakfast</div>
+        <div class="item-icons"><i class="fi fi-rr-tree"></i> {{room_type.view}} view</div>
+        <div class="item-icons"><i class="fi fi-rr-parking"></i> Free self parking</div>
+        <div class="item-icons"><i class="fi fi-rr-users"></i> Sleeps {{room_type.max_guests}}</div>
+        <div class="item-icons"><i class="fi fi-rr-bed"></i> 2 Twin Beds</div>
+        <div class="item-icons"><i class="fi fi-rr-wifi"></i> Free WiFi</div>
+      </div>
+      <a href="{% url 'room_type_detail' room_type.room_type_id %}" class="more-link">More details ›</a>
+    </div>
+      <a href="{% url 'room_type_detail' room_type.room_type_id %}" ><button class="reserve-btn">Reserve</button></a>
+      <div class="note">You will not be charged yet</div>
+  </div>
+{% endfor %}
+ 
+
+
+  
+
+  <!-- Room Card 3 -->
+
+  
+  
+
+</div>
+
+</section>
+<script>
+  const slideIndexes = {};
+
+  function moveSlide(sliderId, direction) {
+    const slider = document.getElementById(sliderId);
+    const total = slider.children.length;
+    if (!slideIndexes[sliderId]) slideIndexes[sliderId] = 0;
+
+    slideIndexes[sliderId] = (slideIndexes[sliderId] + direction + total) % total;
+    slider.style.transform = `translateX(-${slideIndexes[sliderId] * 100}%)`;
+  }
+</script>

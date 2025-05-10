@@ -1,0 +1,9 @@
+        {% load static%} 
+        <!--------------- img    description     search box  --------------->
+        <div class="intro">
+            <img src="{% static 'img/back.webp'%}" alt="Background" class="hhh">
+            <div class="h1">
+                <h1>Your Gateway to Smart Hospitality: <samp id="discover">Discover</samp>, <samp id="manage">Manage</samp>, <samp id="enjoy">Enjoy!</samp></h1>
+                <a href="{% url 'rooms'%}"><input type="search" class="search" placeholder="Search"></a>
+            </div>
+        </div>

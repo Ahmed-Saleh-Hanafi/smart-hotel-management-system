@@ -1,0 +1,53 @@
+{% extends 'base.html'%} 
+{% block content%} 
+    {% load static%} 
+            <nav>
+                <a href="#"><img src="{% static 'img/logo.png'%}" alt="Logo" class="logo"></a>  
+            </nav>
+            <!--------------- img    description     search box  --------------->
+            {% include 'Parts/intro.html' %}
+
+            <!---------------- features of Luxotel  ----------------- -->
+            {% include 'Parts/features_section.html' %}
+            
+            <!--------------------- reset box  ------------>
+            <div class="wrapper">
+                <div class="verifiy-box">
+                    <h2>Verification</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="input-box">
+                            <span class="icon">  <ion-icon name="shield-checkmark-outline"></ion-icon></span>
+                            <input type="text" required placeholder="Code" name="v_code">
+                        </div>
+                        <button class="btn" type="submit" >Verifiy</button>
+                    </form>
+                </div>
+            </div>
+            
+            <script>
+                const wrapper = document.querySelector(".wrapper");
+                wrapper.style.display = "block";
+                wrapper.style.position = "fixed";
+                wrapper.style.top = "50%";
+                wrapper.style.left = "50%";
+                wrapper.style.transform = "translate(-50%, -50%)";
+                wrapper.style.zIndex = "1000";
+                wrapper.style.backgroundColor = "white";
+                wrapper.style.height= '320px';
+                
+                wrapper.style.boxShadow = "0 8px 16px rgba(0,0,0,0.25)";
+                document.querySelector('.wrapper').style.display = 'block';
+                function showMessage(type, message) {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `top-center-message ${type}`;
+                    const icon = type === 'success' ? '✅' : '❌';
+                    msgDiv.innerHTML = `<i>${icon}</i> ${message}`;
+                    document.body.appendChild(msgDiv);
+                    setTimeout(() => {
+                    msgDiv.remove();
+                    }, 5000);}
+            </script>
+            <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+            <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+{% endblock content%}

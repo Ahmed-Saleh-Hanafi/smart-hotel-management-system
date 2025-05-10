@@ -1,0 +1,28 @@
+        {% load static%}
+        <nav>
+            <a href="#"><img src="{% static 'img/logo2.png'%}" alt="Logo" class="logo"></a>
+            <div class="right">
+                <a href="{% url 'index'%}">Home</a>
+                <a href="{% url 'rooms'%}">Rooms</a>
+                <a href="#footer">Contact</a>
+                {%if not guest_info %}
+                <a href="" class="login" id="login">Log in</a>
+                {% endif %}
+            </div>
+            {% if guest_info %}
+            <div class="dropdown">
+                {% if guest_info.profile_picture %}
+                <button class="dropdown-btn"> <img src="{{guest_info.profile_picture.url}}" alt="Profile" class="profile-pic"></button>
+                {% else %}
+                <button class="dropdown-btn"> <img src="{% static 'img/profile.webp'%}" alt="Profile" class="profile-pic"></button>
+                {% endif %}
+                <div class="dropdown-content">
+                    <a href="{% url 'profile_setting'%}" class="pr-set-link"><span class="dicon"><ion-icon name="settings-outline"></ion-icon></span>Profile Settings </a>
+                    <a href="{% url 'booking_history'%}">Booking History</a>
+                    <a href="#">-------</a>
+                    <a href="{% url 'exit_profile'%}" ><span class="dicon"><ion-icon name="log-out-outline"></ion-icon></span>Log out</a>
+                </div>
+            </div>
+            {% endif %}
+        </nav>
+        
