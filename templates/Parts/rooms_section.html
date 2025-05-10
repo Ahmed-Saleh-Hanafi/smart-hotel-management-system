@@ -5,7 +5,14 @@
             <div class="room-list">
               {% for room in rooms_%}
               <div class="room-card">
-                <img src="{% static 'img/back.webp'%}" alt="Hotel Image">
+                {% with room.images.first as image %}
+                {% if image %}
+                <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+                {% else %}
+                <img src="{% static 'img/back.webp'%}" alt="room Image">
+                {% endif %}
+                {% endwith %}
+                
                 <div class="room-info">
                   <h2>{{room.type.name}}</h2>
                   <h6><span class="stars">★★★</span> Hotel</h6>
@@ -16,7 +23,7 @@
                 <div class="room-price">
                   <div class="price">${{room.type.base_price}}</div>
                   <div class="per-night">per night</div>
-                  <button>See Room</button>
+                  <a href="{% url 'room_detail' room.room_id%}"><button>See Room</button></a>
                 </div>
               </div>
               {% endfor%}
@@ -24,7 +31,14 @@
 
               {% for room in room_type.rooms.all%}
               <div class="room-card">
+                {% with room.images.first as image %}
+                {% if image %}
+                <img src="{{ image.image.url }}" alt="{{ image.caption }}">
+                {% else %}
                 <img src="{% static 'img/back.webp'%}" alt="room Image">
+                {% endif %}
+                {% endwith %}
+                
                 <div class="room-info">
                   <h2>{{room.type.name}}</h2>
                   <h6><span class="stars">★★★</span> Hotel</h6>
@@ -36,7 +50,7 @@
                 <div class="room-price">
                   <div class="price">${{room.type.base_price}}</div>
                   <div class="per-night">per night</div>
-                  <button>See Room</button>
+                  <a href="{% url 'room_detail' room.room_id%}"><button>See Room</button></a>
                 </div>
               </div>
               {% endfor%}

@@ -1,7 +1,7 @@
 from django.shortcuts import render , get_object_or_404
 from Accounts import utils
 from rooms import utils as utils_rooms
-from .models import RoomType
+from .models import RoomType , Room
 # Create your views here.
 
 def rooms (request):
@@ -29,3 +29,16 @@ def room_type_detail (request, room_type_id):
         'room_type': room_type,
     }
     return render (request, 'Pages/room_type.html',dic)
+
+def room_detail (request, room_id):
+    id = request.session.get('user_id')
+    guest_info= utils.get_guest_by_id(id)
+    room = get_object_or_404(Room, pk=room_id)
+    
+    dic = {
+        'name_page':'Luxotel | Room Info',
+        'guest_info': guest_info,
+        'room': room,
+    }
+    return render (request, 'Pages/room.html',dic)
+    
