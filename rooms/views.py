@@ -17,6 +17,44 @@ def rooms (request):
         'room_types': room_types,
         'rooms_': rooms_,
     }
+    selected_type_id = request.POST.get ('select_type')
+    if selected_type_id :
+        room_type = RoomType.objects.get(room_type_id = selected_type_id)
+        dic['selected_type'] = room_type
+        dic['room_types'] = None
+        dic ['rooms_'] = Room.objects.filter(type= room_type)
+        if not request.POST.get ('checkin'):
+            return render (request, 'Pages/rooms.html',dic)
+    
+    date_now = datetime.now().date()
+    if request.POST.get ('checkin') :
+        checkin = request.POST.get ('checkin')
+        checkin_date2 = datetime.strptime(checkin, "%Y-%m-%d").date()
+        if checkin_date2 < date_now:
+            return render (request, 'Pages/rooms.html',dic|{'error': f'you must set check in date after {date_now}'})
+        else:
+            dic['checkin_date']= checkin
+            if request.POST.get ('checkout'):
+                checkout = request.POST.get ('checkout')
+                checkout_date2 = datetime.strptime(checkout, "%Y-%m-%d").date()
+                if checkout_date2 < checkin_date2 :
+                    return render (request, 'Pages/rooms.html',dic|{'error': f'you must set check out date after {checkin}'})
+                else :
+                    dic['checkout_date']= checkout
+                    if not request.POST.get ('select_type'):
+                        dic['rooms_']= book_utils.get_available_rooms(checkin_date2, checkout_date2)
+                        return render (request, 'Pages/rooms.html',dic|{'success': f'select your room'})
+                    else :
+                        dic['rooms_']= book_utils.get_available_rooms(checkin_date2, checkout_date2, selected_type_id)
+                        return render (request, 'Pages/rooms.html',dic|{'success': f'select your room'})
+                    
+            else:
+                return render (request, 'Pages/rooms.html',dic|{'error': f'you must set check out date'})
+    
+              
+            
+     
+        
     return render (request, 'Pages/rooms.html',dic)
 
 

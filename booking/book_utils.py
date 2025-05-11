@@ -16,14 +16,19 @@ def generate_qr_code_for_checkin(booking):
     filename = f"checkin_{booking.booking_id}.png"
     booking.qr_code.save(filename, File(buffer), save=True)
     
-def get_available_rooms(check_in, check_out):
+def get_available_rooms(check_in, check_out, type_id=None):
     booked_rooms = Booking.objects.filter(
         check_in__lt=check_out,
         check_out__gt=check_in,
         status__in=['pending', 'confirmed']
     ).values_list('room_id', flat=True)
 
-    return Room.objects.exclude(id__in=booked_rooms)
+    available_rooms = Room.objects.exclude(room_id__in=booked_rooms)
+    
+    if type_id:
+        available_rooms = available_rooms.filter(type_id=type_id)
+    
+    return available_rooms
 
 def is_room_available(room_id, check_in, check_out):
     conflict_exists = Booking.objects.filter(

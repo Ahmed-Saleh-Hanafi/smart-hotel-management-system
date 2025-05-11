@@ -180,7 +180,9 @@
   </style>
   <section class="rooms-section">
 <div class="room-list-con">
-
+  {% if selected_type%}
+<h1>{{selected_type.name}}s</h1>
+{% endif%}
  {% for room_type in room_types%}
   <!-- Room Card 1 -->
   <div class="room-card2">

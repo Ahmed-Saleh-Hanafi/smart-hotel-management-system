@@ -59,3 +59,5 @@ def delete_account (request):
     return redirect ('exit_profile') 
 
 
+
+

@@ -1,19 +1,30 @@
 <!-- Search Bar -->
  <div class="search-continuer">
+  <form method="post">
+    {% csrf_token %}
 <div class="search-bar">
-    <select id="destination" name="destination">
-      <option value="" disabled selected>Select Type</option>
+   
+    <select id="destination"  name="select_type">
+      <option value="{{selected_type.room_type_id}}" disabled selected>
+        {%if selected_type%}
+        {{selected_type}}
+        {% else%}
+        select type
+        {% endif%}
+      </option>
       {% for room_type in room_types%}
-      <option value="{{room_type.name}}">{{room_type.name}}</option>
+      <option value="{{room_type.room_type_id}}">{{room_type.name}}</option>
       {% endfor %}
     </select>
     <p> check-in</p>
-    <input type="date">
+    <input type="date" name="checkin" value="{{checkin_date}}">
     <p> check-out</p>
-    <input type="date">
-    <input type="text" placeholder="Number Guests">
-    <button>Search</button>
+    <input type="date" name="checkout" value="{{checkout_date}}">
+    
+    <button type="submit">Search</button>
+    
   </div>
+  </form>
 </div>
  <style>
     
