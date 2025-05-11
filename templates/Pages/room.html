@@ -430,7 +430,7 @@
     </div>
 
     <!-- Select Room Button -->
-    
+     {% include 'Parts/room_book.html' %}
 
     <div id="overview"></div>
     <h1 class="details-topic" id="overview">{{room.room_type.name}} ★★★</h1>
@@ -628,4 +628,16 @@
         {% include 'Parts/question_section.html' %}
         {% include 'Parts/features_section.html' %}
         
+
+        <script>
+            function showMessage(type, message) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `top-center-message ${type}`;
+    const icon = type === 'success' ? '✅' : '❌';
+    msgDiv.innerHTML = `<i>${icon}</i> ${message}`;
+    document.body.appendChild(msgDiv);
+    setTimeout(() => {
+      msgDiv.remove();
+    }, 3000);}
+        </script>
     {% endblock content%}

@@ -1,0 +1,71 @@
+<div class="search-continuer">
+   
+   <form method="post" class="search-bar">
+    {% csrf_token %}
+    <p> check-in</p>
+    <input type="date" name="checkin_date" value="{{checkin_date}}">
+    <p> check-out</p>
+    <input type="date" name="checkout_date" value="{{checkout_date}}">
+    <input type="text" placeholder="Number Guests" name="number_guest" >
+    
+        {% if guest_info %}
+        <button type="submit">Book</button>
+        
+        {% endif%}
+    </form>
+      {% if not guest_info %}
+        <button onclick="showMessage('erro','you must login first in home page')" class="btn">Book</button>
+        {% endif%}
+    
+</div>
+ <style>
+    
+      
+  .search-continuer {
+    padding-top: 70px;
+  }
+    /* Search Bar */
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    background: #fff;
+    padding: 15px;
+    
+    margin: 20px auto;
+    max-width: 100%px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 6px 6px rgba(0.1,0.1,0.1,0.1);
+  }
+  .search-bar select,
+  .search-bar input[type="date"],
+  .search-bar input[type="text"] {
+    flex: 1; min-width: 120px;
+    padding: 10px 12px;
+    border: none;
+    border-right: 1px solid #ccc;
+    font-size: 0.95rem;
+    background: transparent;
+  }
+  .search-bar select {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+            appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%23333' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px 8px;
+  }
+  .search-bar button ,
+  .btn{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background:rgb(13, 23, 35);
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+  }
+  
+ </style>
