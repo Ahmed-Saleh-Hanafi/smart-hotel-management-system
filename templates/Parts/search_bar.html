@@ -7,7 +7,7 @@
     <select id="destination"  name="select_type">
       <option value="{{selected_type.room_type_id}}" disabled selected>
         {%if selected_type%}
-        {{selected_type}}
+        {{selected_type.name}}
         {% else%}
         select type
         {% endif%}

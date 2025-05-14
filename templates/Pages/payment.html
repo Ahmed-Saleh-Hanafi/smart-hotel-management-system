@@ -1,0 +1,452 @@
+{% extends 'base.html' %} 
+    {% block content %} 
+        {% load static %}
+<style>
+
+.main-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.form-container {
+  flex: 2;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 30px;
+  border-radius: 8px;
+  margin-top: 100px;
+}
+
+.price-container {
+  flex: 1;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+  margin-top: 100px;
+}
+
+h2, h3 {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin: 12px 0 5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 6px;
+  font-size: 13px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input.error, select.error {
+  border-color: red !important;
+  outline: none;
+}
+
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.row {
+  display: flex;
+  gap: 15px;
+}
+
+.row > div {
+  flex: 1;
+}
+
+.card-icons img {
+  height: 45px;
+  margin-right: 10px;
+}
+
+.card-icons {
+  margin-bottom: 15px;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 15px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  background-color: darkgreen;
+}
+
+.price-details {
+  font-size: 15px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.price-details div {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.info-icon {
+  display: inline-block;
+  color: #c2c7ca;
+  cursor: pointer;
+  margin-left: 5px;
+  font-weight: bold;
+  position: relative;
+}
+
+.tooltip-image {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: -20px;
+  z-index: 10;
+  border: 1px solid #ccc;
+  background: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.2);
+}
+
+.tooltip-image img {
+  width: 250px;
+}
+
+.green-tag {
+  background-color: #4CAF50;
+  color: white;
+  font-size: 12px;
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 15px;
+}
+
+.small-link {
+  color: #0071c2;
+  font-size: 13px;
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.payment-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.payment-form-section {
+  display: block;
+}
+
+.cancellation-policy, .important-information {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.check-in-out {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.green-text {
+  color: green;
+  font-weight: bold;
+}
+
+.orange-text {
+  color: orange;
+  font-weight: bold;
+}
+
+.red-text {
+  color: red;
+  font-weight: bold;
+}
+
+.button {
+  background-color: #0071c2;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: darkblue;
+}
+</style>
+<body>
+  <div class="main-container">
+    <div class="form-container">
+     
+
+
+      <div id="cardFormSection" class="payment-form-section">
+        <h2>Payment method</h2>
+        <div class="card-icons">
+          <img src="{% static 'img/paypal.png'%}" alt="paypalCard"/>
+          <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa"/>
+          <img src="{% static 'img/operation.png'%}" alt="Cash"/>
+        </div>
+
+        <form id="paymentForm">
+          <label for="name">Name on Card *</label>
+          <input id="name" type="text" placeholder=" Name on the card " oninput="this.value = this.value.replace(/[^a-zA-Z ]/g, '')" required />
+
+          <div class="error-message" id="nameError"></div>
+
+          <label for="card">Debit/Credit card number *</label>
+          <input id="card" type="text" placeholder="1234-5678-9012-3456" maxlength="19" oninput="formatCardNumber(this)" required />
+
+          <div class="error-message" id="cardError"></div>
+
+          <label>Expiration date *</label>
+          <div class="row">
+            <div>
+              <select id="month" required>
+                <option value="">Month</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div>
+              <select id="year" required>
+                <option value="">Year</option>
+                <script>
+                        const yearSelect = document.currentScript.parentElement;
+                        const currentYear = new Date().getFullYear();
+                        for (let i = 0; i < 12; i++) {
+                        const option = document.createElement("option");
+                        option.value = currentYear + i;
+                        option.textContent = currentYear + i;
+                        yearSelect.appendChild(option);
+                                }
+                </script>
+              </select>
+            </div>
+          </div>
+          <div class="error-message" id="expiryError"></div>
+
+          <div class="row">
+            <div>
+              <label for="security">Security code *
+                <span class="info-icon" id="infoIcon">ⓘ
+                  <div class="tooltip-image" id="tooltipImage">
+                    <img src="#" alt="Card back with CVV highlighted" />
+                  </div>
+                </span>
+              </label>
+              <input type="text" id="security" minlength="3" maxlength="3" required />
+              <div class="error-message" id="securityError"></div>
+            </div>
+          </div>
+          <button id="completeBookingBtn" type="submit" class="button">
+            Complete Booking
+          </button>
+          
+        </form>
+      </div>
+
+      <div class="info-sections-container">
+        <div class="cancellation-policy">
+          <h3>Cancellation Policy</h3>
+          <ul>
+            <li><span class="green-text">97% refund</span> if canceled at least <strong>1 days</strong> after booking date.</li>
+            <li><span class="orange-text">50% refund</span> if canceled <strong>1 day</strong> before check-in.</li>
+            <li><span class="red-text">Non-refundable</span> if canceled on the <strong>same day</strong> of check-in or in case of no-show.</li>
+          </ul>
+        </div>
+
+        <div class="important-information">
+          
+
+          <div class="check-in-out">
+            <div>
+              <strong>Check-in:</strong><br>
+              {{book.check_in}}
+            </div>
+            <div>
+              <strong>Check-out:</strong><br>
+              {{book.check_out}}
+            </div>
+          </div>
+
+          <p>
+            By clicking on the button below, I acknowledge that I have reviewed the
+            <a href="#">Privacy Statement</a> and <a href="#">Government Travel Advice</a> and have reviewed and accept the
+            <a href="#">Rules & Restrictions</a> and <a href="#">Terms of Service</a>.
+          </p>
+
+          <p>
+            🔒 We use secure transmission and encrypted storage to protect your personal information.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="price-container">
+      <h3>Price details</h3>
+      <div class="price-details">
+        <div>
+          <span>1 room × {{ndays}} night</span>
+          <span>$ {{book.total_price}}</span>
+        </div>
+        
+        <div>
+          <span>Taxes</span>
+          <span>$ 0.0</span>
+        </div>
+        <div class="total">
+          <span>Total</span>
+          <span>$ {{book.total_price}}</span>
+        </div>
+        <a href="" class="small-link">Use a coupon, credit, or promotion code</a>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const cardSection = document.getElementById("cardFormSection");
+      const completeBtn = document.getElementById("completeBookingBtn");
+  
+      function validateField(field, isValid, messageId, messageText) {
+        const msgEl = document.getElementById(messageId);
+        if (isValid) {
+          field.classList.remove("error");
+          msgEl.textContent = "";
+          return true;
+        } else {
+          field.classList.add("error");
+          msgEl.textContent = messageText;
+          return false;
+        }
+      }
+  
+      
+      // Form submission
+    
+
+
+  
+      // Clean input
+      document.getElementById("card").addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/[^0-9\-]/g, "");
+      });
+  
+
+
+      document.getElementById("security").addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, "");
+      });
+  
+      // Tooltip
+      const infoIcon = document.getElementById("infoIcon");
+      const tooltipImage = document.getElementById("tooltipImage");
+  
+      if (infoIcon && tooltipImage) {
+        infoIcon.addEventListener("mouseenter", () => {
+          tooltipImage.style.display = "block";
+        });
+  
+        infoIcon.addEventListener("mouseleave", () => {
+          tooltipImage.style.display = "none";
+        });
+      }
+    });
+
+
+        function formatCardNumber(input) {
+      let value = input.value.replace(/[^0-9]/g, '').slice(0, 16);
+      let formatted = '';
+      for (let i = 0; i < value.length; i += 4) {
+        if (i > 0) formatted += '-';
+        formatted += value.substring(i, i + 4);
+      }
+      input.value = formatted;
+    }
+
+
+
+        function getCancellationPolicy(checkinDateStr) {
+  const now = new Date();
+  const checkinDate = new Date(checkinDateStr);
+  const diffTime = checkinDate - now;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays > 3) {
+    return {
+      refundRate: 1,
+      message: "Full refund available up to 3 days before check-in."
+    };
+  } else if (diffDays >= 1) {
+    return {
+      refundRate: 0.5,
+      message: "50% refund available up to 1 day before check-in."
+    };
+  } else {
+    return {
+      refundRate: 0,
+      message: "Non-refundable if canceled on the same day of check-in or in case of no-show."
+    };
+  }
+}
+  </script>
+
+  {% endblock content%}

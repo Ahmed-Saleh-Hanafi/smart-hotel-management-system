@@ -1,9 +1,10 @@
-from django.shortcuts import render , get_object_or_404
+from django.shortcuts import render , get_object_or_404 , redirect
 from Accounts import utils
 from rooms import utils as utils_rooms
 from .models import RoomType , Room
 from datetime import datetime 
 from booking import book_utils
+from django.urls import reverse
 # Create your views here.
 
 def rooms (request):
@@ -18,7 +19,7 @@ def rooms (request):
         'rooms_': rooms_,
     }
     selected_type_id = request.POST.get ('select_type')
-    if selected_type_id :
+    if request.POST.get ('select_type'):
         room_type = RoomType.objects.get(room_type_id = selected_type_id)
         dic['selected_type'] = room_type
         dic['room_types'] = None
@@ -71,7 +72,6 @@ def room_type_detail (request, room_type_id):
     return render (request, 'Pages/room_type.html',dic)
 
 def room_detail (request, room_id):
-    
     id = request.session.get('user_id')
     guest_info= utils.get_guest_by_id(id)
     room = get_object_or_404(Room, pk=room_id)
@@ -115,8 +115,10 @@ def room_detail (request, room_id):
     # manage is avaliable or not
     if request.POST.get ('checkin_date') and request.POST.get ('checkout_date') and request.POST.get ('number_guest'):
         if book_utils.is_room_available (room_id,checkin_date2, checkout_date2):
-            book_utils.create_booking (guest_info, room, checkin_date2, checkout_date2)
-            ####payment
+            book = book_utils.create_get_booking (guest_info, room, checkin_date2, checkout_date2)
+            ####payment 
+            return redirect(reverse('payment', args=[book.booking_id]))
+            
         else :
             return render (request, 'Pages/room.html',dic|{'error': 'this room is not availabe in this check in'})
             

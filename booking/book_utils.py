@@ -40,9 +40,10 @@ def is_room_available(room_id, check_in, check_out):
 
     return not conflict_exists
 
-def create_booking (guest, room, checkin, checkout):
+def create_get_booking (guest, room, checkin, checkout):
     number_of_days = (checkout - checkin).days
     toprice = number_of_days * room.type.base_price
     book = Booking (guest= guest,room= room, check_in= checkin, check_out=checkout,total_price= toprice)
     book.save ()
     generate_qr_code_for_checkin(book)
+    return book
