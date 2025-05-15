@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{name_page}}</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'style/nav.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+
+<body>
+
+
+    {% include 'Parts/navbar.html' %}
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: rgb(13, 23, 35);
+            color: #fff;
+            overflow-y: auto;
+            padding: 20px;
+            margin-top: 80px;
+            margin-left: 5px;
+            border-radius: 25px;
+            height: 600px;
+        }
+
+        .sidebar input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            background-color: #4a90e2;
+            padding: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background-color: #333;
+            margin-top: 2px;
+        }
+
+        .item-list li .label {
+            color: #fff;
+            text-decoration: none;
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        .item-list li .add-btn {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Sidebar */
+
+
+        /* Main content */
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            width: 100%;
+            margin-top: 80px
+        }
+
+        .list-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Forms */
+        .form-container {
+
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-container h2 {
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="tel"],
+        .form-group input[type="number"],
+        .form-group input[type="date"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .button-group {
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4a90e2;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #718096;
+        }
+
+        /* List container styles */
+        .list-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .data-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .data-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Employee table button styles */
+        .data-table button {
+            padding: 6px 12px;
+            margin: 0 4px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .data-table button:first-child {
+            background-color: #4a90e2;
+            color: white;
+        }
+
+        .data-table button:last-child {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .data-table button:first-child:hover {
+            background-color: #357abd;
+        }
+
+        .data-table button:last-child:hover {
+            background-color: #c82333;
+        }
+
+        /* Add Employee button styles */
+        .add-button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-button:hover {
+            background-color: #45a049;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .add-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Search box and button container */
+        .list-header>div {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .search-box input {
+            min-width: 250px;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+        }
+
+        /* Select dropdown styles */
+        .form-group select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23464646' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .form-group select:hover {
+            border-color: #4a90e2;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        .form-group select option {
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        .form-group select option:first-child {
+            color: #666;
+        }
+
+        .form-group select:invalid {
+            color: #666;
+        }
+
+        /* Add this in your <style> section */
+
+        .image-upload-container {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 20px;
+            text-align: center;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .image-upload-container:hover {
+            border-color: #4a90e2;
+            background-color: #f0f7ff;
+        }
+
+        .image-input {
+            display: none;
+        }
+
+        .upload-placeholder {
+            color: #666;
+        }
+
+        .upload-placeholder svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 10px;
+            color: #4a90e2;
+        }
+
+        .upload-placeholder p {
+            margin: 0;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .file-info {
+            display: block;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .preview-item .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+
+    <div class="sidebar">
+        <input type="text" id="filterInput" placeholder="Start typing to filter...">
+        <!-- Accounts -->
+        <div class="section">
+            <div class="section-header">Accounts</div>
+            <ul class="item-list">
+
+                <li>
+                    <span class="label" id="employeesLink">Employees</span>
+                </li>
+
+
+            </ul>
+        </div>
+        <!-- Booking -->
+        <div class="section">
+            <div class="section-header">Booking</div>
+            <ul class="item-list">
+                <li><span class="label" id="boooking">Bookings</span></li>
+            </ul>
+        </div>
+        <!-- Rooms -->
+        <div class="section">
+            <div class="section-header">Rooms</div>
+            <ul class="item-list">
+                <li>
+                    <a href="{% url 'manage_rooms'%}"><span class="label" id="roomsLink">Rooms</span></a>
+                </li>
+                <li>
+                    <span class="label" id="roomTypesLink">Room types</span>
+                </li>
+            </ul>
+        </div>
+        <!-- Reports -->
+        <div class="section">
+            <div class="section-header">Reports</div>
+            <ul class="item-list">
+                <li><span class="label" id="generateReports">Generate Reports</span></li>
+            </ul>
+        </div>
+    </div>
+    {% block content%}
+    {% endblock content%}
+    {% if success %}
+    <script>
+        window.onload = function () {
+            showMessage('success', "{{ success }}");
+        };
+        function showMessage(type, message) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `top-center-message ${type}`;
+            const icon = type === 'success' ? '✅' : '❌';
+            msgDiv.innerHTML = `<i>${icon}</i> ${message}`;
+            document.body.appendChild(msgDiv);
+            setTimeout(() => {
+                msgDiv.remove();
+            }, 3000);
+        }
+    </script>
+    {% endif %}
+    {% if error %}
+    <script>
+        window.onload = function () {
+            showMessage('fail', "{{ error }}");
+        };
+    </script>
+    {% endif %}
+    <script>
+        document.getElementById('filterInput').addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            document.querySelectorAll('.item-list li').forEach(li => {
+                const text = li.querySelector('.label').textContent.toLowerCase();
+                li.style.display = text.includes(filter) ? 'flex' : 'none';
+            });
+        });
+
+        // Room search functionality
+        document.getElementById('roomSearch').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#roomsTableBody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+        //
+
+
+    </script>
+
+
+</body>
+
+</html>

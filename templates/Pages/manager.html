@@ -1,0 +1,450 @@
+
+
+    <h1 id="dash">Dashboard</h1>
+
+    <!-- Employees List -->
+    <div id="employeesList" class="list-container">
+        <div class="list-header">
+            <h2>Employees</h2>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div class="search-box">
+                    <input type="text" id="employeeSearch" placeholder="Search employees...">
+                </div>
+                <button id="addEmployeeBtn" class="add-button">+ Add Employee</button>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Role</th>
+                    <th>Salary</th>
+
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="employeesTableBody">
+                <tr>
+                    <td>john.doe</td>
+                    <td>john.doe@example.com</td>
+                    <td>+1 234-567-8900</td>
+                    <td>Front Desk Manager</td>
+                    <td>$45,000</td>
+
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>jane.smith</td>
+                    <td>jane.smith@example.com</td>
+                    <td>+1 234-567-8901</td>
+                    <td>Housekeeping Supervisor</td>
+                    <td>$38,000</td>
+
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    
+
+    <!-- Room Types List -->
+    <div id="roomTypesList" class="list-container" style="display: none;">
+        <div class="list-header">
+            <h2>Room Types</h2>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div class="search-box">
+                    <input type="text" id="roomTypeSearch" placeholder="Search room types...">
+                </div>
+                <button id="addRoomTypeButton" class="add-button">+ Add Room Type</button>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Max Guests</th>
+                    <th>Base Price</th>
+                    <th>Rate</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="roomTypesTableBody">
+                <tr>
+                    <td>Deluxe Suite</td>
+                    <td>4</td>
+                    <td>$200</td>
+                    <td>$180/night</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Standard Room</td>
+                    <td>2</td>
+                    <td>$150</td>
+                    <td>$120/night</td>
+                    <td>
+                        <button>Edit</button>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bookings List -->
+    <div id="bookingsList" class="list-container" style="display: none;">
+        <div class="list-header">
+            <h2>Bookings</h2>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <div class="search-box">
+                    <input type="text" id="bookingSearch" placeholder="Search bookings...">
+                </div>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Guest</th>
+                    <th>Room</th>
+                    <th>Check in</th>
+                    <th>Check out</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+                <tr>
+                    <td>John Smith</td>
+                    <td>101 - Deluxe Suite</td>
+                    <td>2025-05-15</td>
+                    <td>2025-05-18</td>
+                    <td>Confirmed</td>
+                    <td>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sarah Johnson</td>
+                    <td>102 - Standard Room</td>
+                    <td>2025-05-16</td>
+                    <td>2025-05-17</td>
+                    <td>Checked In</td>
+                    <td>
+                        <button>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Employee Form -->
+    <form id="employeeForm" class="form-container">
+        <h2>Add Employee</h2>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email">
+        </div>
+        <div class="form-group">
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" name="mobile">
+        </div>
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <input type="text" id="role" name="role">
+        </div>
+        <div class="form-group">
+            <label for="salary">Salary:</label>
+            <input type="number" id="salary" name="salary" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate">
+        </div>
+        <div class="button-group">
+            <button type="submit">Save</button>
+            <button type="button" id="cancelEmp">Cancel</button>
+        </div>
+    </form>
+
+    <!-- Room Type Form -->
+    <form id="roomTypeForm" class="form-container">
+        <h2>Add Room Type</h2>
+        <!-- existing room type fields -->
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="maxGuests">Max guests:</label>
+            <input type="number" id="maxGuests" name="maxGuests" min="1">
+        </div>
+        <div class="form-group">
+            <label for="room">Room:</label>
+            <input type="text" id="room" name="room">
+        </div>
+        <div class="form-group">
+            <label for="view">View:</label>
+            <input type="text" id="view" name="view">
+        </div>
+        <div class="form-group">
+            <label for="features">Room features:</label>
+            <textarea id="features" name="features"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="basePrice">Base price:</label>
+            <input type="text" id="basePrice" name="basePrice">
+        </div>
+        <div class="form-group">
+            <label for="rate">Rate:</label>
+            <input type="text" id="rate" name="rate">
+        </div>
+        <div class="form-group">
+            <label for="perfectFor">Perfect for:</label>
+            <textarea id="perfectFor" name="perfectFor"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="roomTypeImages">Room Type Images:</label>
+            <div class="image-upload-container">
+                <input type="file" id="roomTypeImages" name="roomTypeImages" accept="image/*" multiple
+                    class="image-input">
+                <div class="upload-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2z" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                    <p>Drop images here or click to upload</p>
+                    <span class="file-info">Supports: JPG, PNG, GIF (Max 5MB each)</span>
+                </div>
+            </div>
+            <div id="roomTypeImagePreview" class="image-preview"></div>
+        </div>
+        <div class="button-group">
+            <button type="submit">Save</button>
+            <button type="button">Save and add another</button>
+            <button type="button">Save and continue editing</button>
+        </div>
+    </form>
+
+    
+</div>
+
+<script>
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Employee search functionality
+    document.getElementById('employeeSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#employeesTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    
+
+
+
+    // Room Type search functionality
+    document.getElementById('roomTypeSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#roomTypesTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+
+
+
+    // Add this to your script section
+
+    document.querySelector('.image-upload-container').addEventListener('click', () => {
+        document.getElementById('roomImages').click();
+    });
+
+    document.getElementById('roomImages').addEventListener('change', function (e) {
+        const preview = document.getElementById('imagePreview');
+        preview.innerHTML = '';
+
+        [...this.files].forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `
+              <img src="${e.target.result}" alt="Room preview">
+              <button type="button" class="remove-btn">&times;</button>
+            `;
+                    preview.appendChild(div);
+
+                    div.querySelector('.remove-btn').addEventListener('click', function () {
+                        div.remove();
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        document.querySelector('.image-upload-container').addEventListener(eventName, e => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    // Handle drop
+    document.querySelector('.image-upload-container').addEventListener('drop', function (e) {
+        const files = e.dataTransfer.files;
+        document.getElementById('roomImages').files = files;
+        const event = new Event('change');
+        document.getElementById('roomImages').dispatchEvent(event);
+    });
+
+    // Room Type Image Upload
+    document.querySelector('#roomTypeForm .image-upload-container').addEventListener('click', () => {
+        document.getElementById('roomTypeImages').click();
+    });
+
+    document.getElementById('roomTypeImages').addEventListener('change', function (e) {
+        const preview = document.getElementById('roomTypeImagePreview');
+        preview.innerHTML = '';
+
+        [...this.files].forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const div = document.createElement('div');
+                    div.className = 'preview-item';
+                    div.innerHTML = `
+              <img src="${e.target.result}" alt="Room Type preview">
+              <button type="button" class="remove-btn">&times;</button>
+            `;
+                    preview.appendChild(div);
+
+                    div.querySelector('.remove-btn').addEventListener('click', function () {
+                        div.remove();
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+
+    // Prevent default drag behaviors for room type images
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        document.querySelector('#roomTypeForm .image-upload-container').addEventListener(eventName, e => {
+            e.preventDefault();
+            e.stopPropagation();
+        }, false);
+    });
+
+    // Handle drop for room type images
+    document.querySelector('#roomTypeForm .image-upload-container').addEventListener('drop', function (e) {
+        const files = e.dataTransfer.files;
+        document.getElementById('roomTypeImages').files = files;
+        const event = new Event('change');
+        document.getElementById('roomTypeImages').dispatchEvent(event);
+    });
+
+    // Bookings Link functionality
+    document.getElementById('boooking').addEventListener('click', e => {
+        e.preventDefault();
+        // Show bookings list
+        document.getElementById('bookingsList').style.display = 'block';
+        // Hide other elements
+        document.getElementById('roomsList').style.display = 'none';
+        document.getElementById('roomTypesList').style.display = 'none';
+        employeesList.style.display = 'none';
+        employeeForm.style.display = 'none';
+        roomTypeForm.style.display = 'none';
+        roomForm.style.display = 'none';
+    });
+
+    // Booking search functionality
+    document.getElementById('bookingSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#bookingsTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+    // edit room 
+    document.querySelectorAll('.editRoomButton').forEach(button => {
+        button.addEventListener('click', e => {
+            e.preventDefault();
+
+            // Get data from the clicked button
+            const roomId = button.dataset.roomId;
+            const roomNumber = button.dataset.roomNumber;
+            const roomType = button.dataset.roomType;
+            const roomStatus = button.dataset.roomStatus;
+            const roomPrice = button.dataset.roomPrice;
+            const roomPhone = button.dataset.roomPhone;
+
+            // Fill form inputs
+
+            document.getElementById('roomID').value = roomId;
+            document.getElementById('roomNumber').value = roomNumber;
+            document.getElementById('roomPhone').value = roomPhone;
+            // Show form and hide others
+            document.getElementById('employeeForm').style.display = 'none';
+            document.getElementById('roomTypeForm').style.display = 'none';
+            document.getElementById('roomForm').style.display = 'block';
+            document.getElementById('employeesList').style.display = 'none';
+            document.getElementById('roomTypesList').style.display = 'none';
+            document.getElementById('roomsList').style.display = 'none';
+            document.getElementById('bookingsList').style.display = 'none';
+
+
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+</script>

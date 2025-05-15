@@ -1,6 +1,7 @@
 from django.shortcuts import render , redirect
 from Accounts import utils
 from rooms import utils as utils_rooms
+from staff import staff_utils
 # Create your views here.
 
 
@@ -26,6 +27,11 @@ def index (request):
     elif request.method == 'POST' and request.POST.get ('spassword'):
         email = request.POST.get ('semail')
         password = request.POST.get ('spassword')
+        manger = staff_utils.is_manager (email,password)
+        if manger:
+            utils.create_session (request, manger.primary_id)
+            return redirect ('manager')
+        
         guest = utils.get_guest_by_email (email)
         if guest and (guest.password == password or password == guest.temp_password) :
             if  guest.is_email_verified:
