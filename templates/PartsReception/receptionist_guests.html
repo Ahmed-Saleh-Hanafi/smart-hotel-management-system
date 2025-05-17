@@ -1,0 +1,54 @@
+{% extends 'base_receptionist.html'%}
+{% block content%}
+{% load static%}
+<!-- Guests List -->
+    <div id="guestsList" class="list-container" >
+      <div class="list-header">
+        <h2>Guests</h2>
+        <div>
+          <div class="search-box">
+            <input type="text" id="guestSearch" placeholder="Search guests...">
+          </div>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Country</th>
+            <th>Gender</th>
+          </tr>
+        </thead>
+        <tbody id="guestsTableBody">
+          {% for guest in  guests%}
+          <tr>
+            <td>{{guest.username}}</td>
+            <td>{{guest.email}}</td>
+            <td>{{guest.phone_number}}</td>
+            <td>{{guest.country}}</td>
+            <td>{{guest.gender}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <script>
+
+
+
+        // Filter the guests list
+        document.getElementById('guestSearch').addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#guestsTableBody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+
+    </script>
+{% endblock content%}

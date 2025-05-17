@@ -31,7 +31,12 @@ def index (request):
         if manger:
             utils.create_session (request, manger.primary_id)
             return redirect ('manager')
-        
+            ######receptionist
+        receptionist = staff_utils.is_receptionist(email,password)
+        if receptionist:
+            staff_utils.create_session_receptionist(request, receptionist.primary_id)
+            return redirect ('receptionist') 
+          #########
         guest = utils.get_guest_by_email (email)
         if guest and (guest.password == password or password == guest.temp_password) :
             if  guest.is_email_verified:

@@ -1,0 +1,101 @@
+{% extends 'base_receptionist.html'%}
+{% block content%}
+{% load static%}
+<!-- Check In List -->
+<div id="checkInList" class="list-container">
+    <div class="list-header">
+        <h2>Check In</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="search-box">
+                <input type="text" id="checkInSearch" placeholder="Search check-ins...">
+            </div>
+            <div class="date-filter">
+                <input type="date" id="checkInDateFilter" class="date-input">
+            </div>
+            <button id="clearCheckInFilters" class="clear-btn">Clear Filters</button>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Check in</th>
+                <th>Check out</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="checkInTableBody">
+            {% for book in books%}
+            <tr>
+                <td>{{book.guest.username}}</td>
+                <td>{{book.room.room_number}} - {{book.room.type.name}}</td>
+                <td>{{book.check_in|date:"Y-m-d" }}</td>
+                <td>{{book.check_out|date:"Y-m-d" }}</td>
+                <td>{{book.status|capfirst}}</td>
+                <td>
+                    <a href="{% url 'check_out' book.booking_id %}"><button class="check-out-btn" >Check Out</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+
+   document.getElementById('checkInSearch').addEventListener('input', filtercheckIns);
+document.getElementById('checkInDateFilter').addEventListener('change', filtercheckIns);
+document.getElementById('clearCheckInFilters').addEventListener('click', clearcheckInFilters);
+
+function filtercheckIns() {
+  const searchTerm = document.getElementById('checkInSearch').value.toLowerCase();
+  const dateFilter = document.getElementById('checkInDateFilter').value;
+  const rows = document.querySelectorAll('#checkInTableBody tr');
+  
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    const checkInDate = row.cells[3].textContent; // Check-out date column
+    
+    const matchesSearch = text.includes(searchTerm);
+    const matchesDate = !dateFilter || checkInDate === dateFilter;
+    
+    row.style.display = (matchesSearch && matchesDate) ? '' : 'none';
+  });
+}
+
+function clearcheckInFilters() {
+  document.getElementById('checkInSearch').value = '';
+  document.getElementById('checkInDateFilter').value = '';
+  filtercheckIns();
+}
+
+
+    function updatecheckInButtons() {
+        const today = new Date().toISOString().split('T')[0];
+        const rows = document.querySelectorAll('#checkOutTableBody tr');
+
+        rows.forEach(row => {
+            const checkInDate = row.cells[3].textContent; // Check-out date column
+            const status = row.cells[4].textContent; // Status column
+            const checkInBtn = row.querySelector('.check-out-btn');
+
+            if (checkInDate === today && status === 'Occupied') {
+                checkInBtn.style.display = 'inline-block';
+            } else {
+                checkInBtn.style.display = 'none';
+            }
+        });
+    }
+
+    
+
+    
+
+    
+
+
+</script>
+{% endblock content%}

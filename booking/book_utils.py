@@ -47,3 +47,4 @@ def create_get_booking (guest, room, checkin, checkout):
     book.save ()
     generate_qr_code_for_checkin(book)
     return book
+

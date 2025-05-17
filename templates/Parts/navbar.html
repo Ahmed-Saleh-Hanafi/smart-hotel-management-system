@@ -1,7 +1,7 @@
         {% load static%}
         <nav>
             <a href="#"><img src="{% static 'img/logo2.png'%}" alt="Logo" class="logo"></a>
-            {%if not manager%}
+            {%if not manager and not receptionist%}
             <div class="right">
                 <a href="{% url 'index'%}">Home</a>
                 <a href="{% url 'rooms'%}">Rooms</a>
@@ -12,7 +12,7 @@
                 {% endif %}
             </div>
             {%endif%}
-            {% if manager%}
+            {% if manager %}
             <div class="dropdown">
                 {% if guest_info.profile_picture %}
                 <button class="dropdown-btn"> <img src="{{guest_info.profile_picture.url}}" alt="Profile" class="profile-pic"></button>
@@ -22,6 +22,18 @@
                 <div class="dropdown-content">
                     
                     <a href="{% url 'exit_profile'%}" ><span class="dicon"><ion-icon name="log-out-outline"></ion-icon></span>Log out</a>
+                </div>
+            </div>
+            {% endif%}
+            {% if receptionist %}
+            <div class="dropdown">
+                {% if receptionist.profile_picture %}
+                <button class="dropdown-btn"> <img src="{{receptionist.profile_picture.url}}" alt="Profile" class="profile-pic"></button>
+                {% else %}
+                <button class="dropdown-btn"> <img src="{% static 'img/profile.webp'%}" alt="Profile" class="profile-pic"></button>
+                {% endif %}
+                <div class="dropdown-content">
+                    <a href="{% url 'exit_profile_receptionist'%}" ><span class="dicon"><ion-icon name="log-out-outline"></ion-icon></span>Log out</a>
                 </div>
             </div>
             {% endif%}

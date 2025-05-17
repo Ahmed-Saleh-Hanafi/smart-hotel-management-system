@@ -1,0 +1,89 @@
+{% extends 'base_receptionist.html'%}
+{% block content%}
+{% load static%}
+<!-- Rooms List -->
+<div id="roomsList" class="list-container">
+    <div class="list-header">
+        <h2>Rooms</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="search-box">
+                <input type="text" id="roomSearch" placeholder="Search rooms...">
+            </div>
+            <div class="status-filter">
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="Vacant">Vacant</option>
+                    <option value="Occupied">Occupied</option>
+                    <option value="Cleaning">Cleaning</option>
+                    <option value="Maintenance">Maintenance</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Room Number</th>
+                <th>Room Type</th>
+                <th>Status</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="roomsTableBody">
+            {% for room in rooms%}
+            <tr>
+                <td>{{room.room_number}}</td>
+                <td>{{room.type.name}}</td>
+                <td>{{room.status|capfirst}}</td>
+                <td>${{room.type.base_price}}</td>
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+
+
+
+    // Room search functionality
+    document.getElementById('roomSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#roomsTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+
+
+    document.getElementById('statusFilter').addEventListener('change', filterRooms);
+    document.getElementById('roomSearch').addEventListener('input', filterRooms);
+
+    function filterRooms() {
+        const searchTerm = document.getElementById('roomSearch').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+        const rows = document.querySelectorAll('#roomsTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const status = row.cells[2].textContent; // Status column
+
+            const matchesSearch = text.includes(searchTerm);
+            const matchesStatus = !statusFilter || status === statusFilter;
+
+            row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+        });
+    }
+
+
+
+
+
+
+</script>
+{% endblock content%}

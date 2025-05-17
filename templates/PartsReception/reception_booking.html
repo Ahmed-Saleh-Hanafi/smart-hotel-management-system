@@ -1,0 +1,114 @@
+{% extends 'base_receptionist.html'%}
+{% block content%}
+{% load static%}
+<!-- Bookings List -->
+<div id="bookingsList" class="list-container">
+    <div class="list-header">
+        <h2>Bookings</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="search-box">
+                <input type="text" id="bookingSearch" placeholder="Search bookings...">
+            </div>
+            <div class="date-filter">
+                <input type="date" id="checkInFilter" class="date-input">
+            </div>
+            <button id="clearFilters" class="clear-btn">Clear Filters</button>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Check in</th>
+                <th>Check out</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookingsTableBody">
+            {% for book in books%}
+            <tr>
+                <td>{{book.guest.username}}</td>
+                <td>{{book.room.room_number}} - {{book.room.type.name}}</td>
+                <td>{{book.check_in|date:"Y-m-d" }}</td>
+                <td>{{book.check_out|date:"Y-m-d"  }}</td>
+                <td>{{book.status|capfirst}}</td>
+                <td>
+                    <a href="{% url 'check_in' book.booking_id %}"><button class="check-in-btn" style="display: none;">Check In</button></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+    {
+        document.getElementById('bookingSearch').addEventListener('input', filterBookings);
+        document.getElementById('checkInFilter').addEventListener('change', filterBookings);
+        document.getElementById('clearFilters').addEventListener('click', clearFilters);
+
+        function filterBookings() {
+            const searchTerm = document.getElementById('bookingSearch').value.toLowerCase();
+            const dateFilter = document.getElementById('checkInFilter').value;
+            const rows = document.querySelectorAll('#bookingsTableBody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const checkInDate = row.cells[2].textContent.trim(); // Added trim() to handle whitespace
+
+                // Improved date comparison
+                const matchesSearch = text.includes(searchTerm);
+                const matchesDate = !dateFilter || new Date(checkInDate).toISOString().split('T')[0] === dateFilter;
+
+                row.style.display = (matchesSearch && matchesDate) ? '' : 'none';
+            });
+        }
+
+        function clearFilters() {
+            document.getElementById('bookingSearch').value = '';
+            document.getElementById('checkInFilter').value = '';
+            // Trigger the filter to show all rows
+            filterBookings();
+            // Update the UI to reflect cleared state
+            document.querySelectorAll('#bookingsTableBody tr').forEach(row => {
+                row.style.display = '';
+            });
+        }
+
+    }
+
+    function updateCheckInButtons() {
+        const today = new Date().toISOString().split('T')[0];
+        const rows = document.querySelectorAll('#bookingsTableBody tr');
+
+        rows.forEach(row => {
+            const checkInDate = row.cells[2].textContent; // Check-in date column
+            const status = row.cells[4].textContent; // Status column
+            const checkInBtn = row.querySelector('.check-in-btn');
+
+            // Show button only if check-in is today and status is Confirmed
+            if (checkInDate === today && status === 'Confirmed') {
+                checkInBtn.style.display = 'inline-block';
+            } else {
+                checkInBtn.style.display = 'none';
+            }
+        });
+    }
+
+    // Add click handler for Check In buttons
+    document.querySelectorAll('.check-in-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const row = this.closest('tr');
+            row.cells[4].textContent = 'Checked In'; // Update status
+            this.style.display = 'none'; // Hide button after check-in
+        });
+    });
+
+    // Run when page loads and when bookings tab is clicked
+    updateCheckInButtons();
+    document.getElementById('boooking').addEventListener('click', updateCheckInButtons);
+
+
+</script>
+{% endblock content%}

@@ -1,0 +1,53 @@
+{% extends 'base_receptionist.html'%}
+{% block content%}
+{% load static%}
+
+<div id="roomTypesList" class="list-container">
+    <div class="list-header">
+        <h2>Room Types</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="search-box">
+                <input type="text" id="roomTypeSearch" placeholder="Search room types...">
+            </div>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Max Guests</th>
+                <th>Base Price</th>
+                <th>Rate</th>
+            </tr>
+        </thead>
+        <tbody id="roomTypesTableBody">
+            {% for type in rooms_types%}
+            <tr>
+                <td>{{type.name}}</td>
+                <td>{{type.max_guests}}</td>
+                <td>${{type.base_price}}</td>
+                <td>{{type.rate}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+
+    // Room Type search functionality
+    document.getElementById('roomTypeSearch').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#roomTypesTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    });
+
+</script>
+
+{% endblock content%}

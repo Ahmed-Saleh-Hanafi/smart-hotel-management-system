@@ -53,6 +53,10 @@ def exit_profile (request):
     del request.session['user_id']
     return redirect ('index')
 
+def exit_profile_receptionist(request):
+    del request.session['receptionist_id']
+    return redirect ('index')
+
 def delete_account (request):
     id = request.session.get('user_id')
     utils.delete_guest_by_id (id)

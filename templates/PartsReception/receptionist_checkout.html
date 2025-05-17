@@ -1,0 +1,78 @@
+{% extends 'base_receptionist.html'%}
+{% block content%}
+{% load static%}
+<!-- Check Out List -->
+<div id="checkOutList" class="list-container">
+    <div class="list-header">
+        <h2>Check Out</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="search-box">
+                <input type="text" id="checkOutSearch" placeholder="Search check-outs...">
+            </div>
+            <div class="date-filter">
+                <input type="date" id="checkOutDateFilter" class="date-input">
+            </div>
+            <button id="clearCheckOutFilters" class="clear-btn">Clear Filters</button>
+        </div>
+    </div>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Guest</th>
+                <th>Room</th>
+                <th>Check in</th>
+                <th>Check out</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="checkOutTableBody">
+            {% for book in books%}
+            <tr>
+                <td>{{book.guest.username}}</td>
+                <td>{{book.room.room_number}} - {{book.room.type.name}}</td>
+                <td>{{book.check_in|date:"Y-m-d" }}</td>
+                <td>{{book.check_out|date:"Y-m-d" }}</td>
+                <td>{{book.status|capfirst}}</td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+
+    // Check Out search and filter functionality
+    document.getElementById('checkOutSearch').addEventListener('input', filterCheckOuts);
+    document.getElementById('checkOutDateFilter').addEventListener('change', filterCheckOuts);
+    document.getElementById('clearCheckOutFilters').addEventListener('click', clearCheckOutFilters);
+
+    function filterCheckOuts() {
+        const searchTerm = document.getElementById('checkOutSearch').value.toLowerCase();
+        const dateFilter = document.getElementById('checkOutDateFilter').value;
+        const rows = document.querySelectorAll('#checkOutTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            const checkOutDate = row.cells[3].textContent; // Check-out date column
+
+            const matchesSearch = text.includes(searchTerm);
+            const matchesDate = !dateFilter || checkOutDate === dateFilter;
+
+            row.style.display = (matchesSearch && matchesDate) ? '' : 'none';
+        });
+    }
+
+    function clearCheckOutFilters() {
+        document.getElementById('checkOutSearch').value = '';
+        document.getElementById('checkOutDateFilter').value = '';
+        filterCheckOuts();
+    }
+
+
+
+
+</script>
+
+{% endblock content%}
